@@ -2,6 +2,9 @@
 
 void Data::setup(){
     DATA_HOST = "http://127.0.0.1:5000";
+    
+    maxStatEntry = 0;
+    maxCombinedStatEntry = 0;
 }
 
 
@@ -15,10 +18,18 @@ void Data::debugDraw(){
 
 // import all data
 void Data::getData(){
+    
+    // don't do this if we already have the datan
+    
+    cout<<"Importing data ... "<<endl;
+    
     getLocations();    
     for (int i=0; i<locations.size(); i++) {
         getStatEntries(&locations[i]);
     }
+    
+    maxCombinedStatEntry = maxStatEntry * 2; // do this properly
+    
 }
 
 void Data::getLocations(){
@@ -30,7 +41,7 @@ void Data::getLocations(){
     
     // todo: add error handling here and tell me to turn on the db and start flask
     
-    cout<<response.status<<endl;
+    //cout<<response.status<<endl;
     
     
     json_t* root;
@@ -46,7 +57,7 @@ void Data::getLocations(){
         
         data = json_array_get(root, i);      
         
-        cout<<"Getting: "<<ofxjan.getValueS(data, "road")<<endl;
+        //cout<<"Getting: "<<ofxjan.getValueS(data, "road")<<endl;
         
         id = json_object_get(data, "_id");                
         lat = json_object_get(data, "lat");
@@ -69,7 +80,7 @@ void Data::getLocations(){
 
 void Data::getStatEntries(Location* location){
     
-    cout<<"Getting entries for "<<location->road<<endl;
+    //cout<<"Getting entries for "<<location->road<<endl;
     
     ofHttpResponse response = ofLoadURL(DATA_HOST + "/locations/" + location->oid + "/entries" );
     string responseStr = response.data;
@@ -85,14 +96,13 @@ void Data::getStatEntries(Location* location){
         json_t *data, *id;
         
         data = json_array_get(root, i);
-        //id = json_object_get(data, "_id");
-        //Entry entry;
-        //entry.oid = ofxjan.getValueS(id, "$oid");
         
         int direction = ofxjan.getValueI(data, "direction");
-        
-        //entry.hour = ofxjan.getValueI(data, "hour");
         int amount = ofxjan.getValueI(data, "amount");
+        
+        if (amount > maxStatEntry) {
+            maxStatEntry = amount;
+        }
         
         if (direction == 1) {
             location->dir_one.push_back(amount);

@@ -14,12 +14,9 @@ public:
 	void update();
 	void debugDraw();
     
-    void start();
+    void play();
     void pause();
-    void resume();
-    
-    
-    
+    void stop();
     
     // data
     Data * data;
@@ -29,15 +26,11 @@ public:
     MSA::Interpolator1D	 myInterpolator1D;
     MSA::Interpolator1D	 myInterpolator1D_two;
     
-    
     string formatTime(int millis);
     
-    void stop();    
-    void setSpeed();
     
     float speed;
-    
-    // simulator time and duration
+    float elapsedFloat;
     int simElapsedTime;
     int simDuration;    
     int lastUpdateTime;

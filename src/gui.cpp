@@ -1,16 +1,19 @@
 #include "gui.h"
 
 void Gui::setup(){
-    
+        
     ui = new ofxUICanvas(0,0,320,320);
     
     ui->addWidgetDown(new ofxUILabel("Chaotic flow", OFX_UI_FONT_MEDIUM));
     
-    ui->addSlider("BACKGROUND VALUE",0.0,255.0,100.0,304,16);
     ui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
     
+    ui->addWidgetDown(new ofxUIToggle(32, 32, false, "PLAY/PAUSE"));
     
-    //ui->addSlider("Speed",&data->speed,255.0,100.0,304,16);
+    //ui->addWidgetDown(new ofxUISlider(32, 32, false, "PLAY/PAUSE"));
+    
+    //ui->addToggle("Play / Pause",playToggle,304,16);
+
     
     ofAddListener(ui->newGUIEvent, this, &Gui::guiEvent); 
     
@@ -37,15 +40,19 @@ void Gui::exit()
 
 void Gui::guiEvent(ofxUIEventArgs &e)
 {
-    if(e.widget->getName() == "BACKGROUND VALUE")
-    {
-        ofxUISlider *slider = (ofxUISlider *) e.widget;    
-        ofBackground(slider->getScaledValue());
-    }
-    else if(e.widget->getName() == "FULLSCREEN")
+    if(e.widget->getName() == "FULLSCREEN")
     {
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
         ofSetFullscreen(toggle->getValue());   
+    } else if (e.widget->getName() == "PLAY/PAUSE") {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        
+        if(toggle->getValue()) {
+            playToggle = true;
+        } else {
+            playToggle = false;
+        }
+        
     }
 }
 

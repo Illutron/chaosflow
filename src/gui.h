@@ -17,4 +17,9 @@ public:
     
     void loadSettings();
     
+    
+    bool playToggle;
+    float simSpeed;
+    
+    
 };

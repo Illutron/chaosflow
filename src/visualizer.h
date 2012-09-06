@@ -10,10 +10,14 @@ class Visualizer {
 public:
 	void setup(Data * dataRef, Gui * guiRef, Simulator * simRef);
 	void update();
+    
+    void mousePressed(int x, int y, int button);
+    
 	void debugDraw();
     
-    void drawMap();
-    void drawInterpolation(Location location);
+    void draw();
+    void drawLocation(Location * loc);
+    void drawInterpolation(Location * loc);
     
     Data * data;
     Gui * gui;
@@ -25,5 +29,6 @@ public:
     double maxLat;
     double maxLng;
     
+    Location * selectedLoc;
     
 };

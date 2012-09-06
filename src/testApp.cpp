@@ -23,11 +23,8 @@ void testApp::setup(){
 	ofSetColor(255,255,255);
     ofEnableAlphaBlending();
     
-    
-    
     gui->loadSettings();
-    simulator->start();
-    
+    simulator->play();
 }
 
 
@@ -42,6 +39,9 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+    
+    visualizer->draw();
+    
     
     data->debugDraw();
     visualizer->debugDraw();
@@ -72,7 +72,7 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 
 void testApp::mousePressed(int x, int y, int button){
-
+    visualizer->mousePressed(x, y, button);
 }
 
 void testApp::mouseReleased(int x, int y, int button){

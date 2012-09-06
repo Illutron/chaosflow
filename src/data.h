@@ -6,19 +6,6 @@
 #include "ofxJansson.h"
 #include "MSAInterpolator.h"
 
-/*
-struct Entry {
-    //string oid;
-    //string location_oid;
-    //string type;
-    
-    // we could do with only hour and amount if needed
-    //int hour;
-    int amount;
-    
-    int direction;
-};*/
-
 
 struct Location {
     
@@ -28,6 +15,10 @@ struct Location {
     double  lat;
     double  lng;
     
+    // local pixel coordinates in visualization
+    ofPoint marker;
+    float markerRadius;
+    
     // label
     string road;
     
@@ -36,9 +27,7 @@ struct Location {
     
     MSA::Interpolator1D dir_one;
     MSA::Interpolator1D dir_two;
-    
-    //vector<Entry> dir_one;
-    //vector<Entry> dir_two;    
+        
 };
 
 
@@ -53,6 +42,14 @@ public:
     void getData();
     
     vector<Location> locations;
+    
+    //double maxLat;
+    //double minLat;
+    //double maxLng;
+    //double minLng;
+    
+    int maxStatEntry;
+    int maxCombinedStatEntry;
     
 private:
     
