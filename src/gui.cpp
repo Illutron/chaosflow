@@ -14,8 +14,12 @@ void Gui::setup(){
     
     ofAddListener(ui->newGUIEvent, this, &Gui::guiEvent); 
     
-    ui->loadSettings("GUI/guiSettings.xml"); 
+     
     
+}
+
+void Gui::loadSettings(){
+    ui->loadSettings("GUI/guiSettings.xml");
 }
 
 void Gui::update(){

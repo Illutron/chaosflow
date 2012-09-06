@@ -19,4 +19,11 @@ public:
     Gui * gui;
     Simulator * sim;
     
+    // calibration
+    double minLat;
+    double minLng;
+    double maxLat;
+    double maxLng;
+    
+    
 };

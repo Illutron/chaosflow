@@ -25,19 +25,14 @@ class testApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+        void exit();
+    
         
     Data * data;
     Gui * gui;
     Simulator * simulator;
     flowControl * flowcontrol;
     Visualizer * visualizer;
-    
-    
-    // calibration
-    double minLat;
-    double minLng;
-    double maxLat;
-    double maxLng;
     
     
 };  

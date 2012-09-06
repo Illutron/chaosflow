@@ -15,4 +15,6 @@ public:
     void exit(); 
     void guiEvent(ofxUIEventArgs &e);
     
+    void loadSettings();
+    
 };
