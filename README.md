@@ -1,4 +1,6 @@
-Abstract data visualization of Copenhagens bike traffic for an installation at the 4S/EASST conferences 2012
+Abstract data visualization of Copenhagens bike traffic for an installation at the 4S/EASST conferences 2012.
+
+Get the raw data at http://ge.tt/3mnABAM/v/0
 
 Run ´$ mongod´
 

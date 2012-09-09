@@ -26,7 +26,7 @@ path = 'data/'
 
 def add_stat_entry(stat_bucket, hour, amount, direction, type="bike"):
     stat_entry = {
-        "stat_bucket": stat_bucket, #todo: change this to mongodb id
+        "stat_bucket": stat_bucket,
         "hour": hour,
         "amount": amount,
         "type": type,

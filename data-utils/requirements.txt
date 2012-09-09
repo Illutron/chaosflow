@@ -1,0 +1,11 @@
+Flask==0.9
+bson==0.3.3
+geopy==0.94.2
+httplib2==0.7.1
+ipython==0.13
+mongokit==0.8
+oauth2==1.5.170
+openpyxl==1.5.8
+pycrypto==2.4.1
+pymongo==2.3
+simplejson==2.1.6
