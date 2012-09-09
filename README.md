@@ -5,12 +5,12 @@ Get the raw data at http://ge.tt/3mnABAM/v/0
 Install and run mongod:
 
     $ npm install mongodb
-    $ mongod --dbpath .data-utils/db 
+    $ mongod --dbpath data-utils/db 
 
 Set up a python virtualenv and isntall requirements:
 
     $ mkvirtualenv chaosflow
-    $ pip install -r .data-utils/requirements.txt
+    $ pip install -r data-utils/requirements.txt
 
 Import data from excel files to mongo db using the python import script. Do a geocode lookup on every entry:  
     
@@ -19,7 +19,7 @@ Import data from excel files to mongo db using the python import script. Do a ge
 
 Run the server:
 
-    $ python chaosflow.py
+    $ python server/chaosflow.py
 
 Then you can run the openframeworks app.
 
