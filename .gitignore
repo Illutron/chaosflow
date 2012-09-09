@@ -38,3 +38,6 @@ xcuserdata
 *.xcworkspace
 
 DerivedData
+/data-utils/db/
+/data-utils/data/
+/data-utils/.idea/
