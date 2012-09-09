@@ -30,8 +30,6 @@ struct Location {
         
 };
 
-
-
 class Data {
 public:
     

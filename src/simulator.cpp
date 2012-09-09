@@ -11,7 +11,7 @@ void Simulator::setup(Data * dataRef, Gui * guiRef){
     
     lastUpdateTime = 0;
     
-    speed = 1000.;
+    speed = 1200.;
     
     playing = false;
     
@@ -27,7 +27,7 @@ void Simulator::update(){
         pause();
     }
         
-    speed = gui->simSpeed;
+    //speed = gui->simSpeed;
     
     if (playing) {
         

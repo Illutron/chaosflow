@@ -26,8 +26,7 @@ public:
     MSA::Interpolator1D	 myInterpolator1D;
     MSA::Interpolator1D	 myInterpolator1D_two;
     
-    string formatTime(int millis);
-    
+    string formatTime(int millis);    
     
     float speed;
     float elapsedFloat;
@@ -38,7 +37,4 @@ public:
     
     bool playing;
     
-
-    
-
 };
