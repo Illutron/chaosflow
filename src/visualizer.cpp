@@ -35,6 +35,23 @@ void Visualizer::mousePressed(int x, int y, int button){
 }
 
 
+void Visualizer::keyPressed(int key){
+    if(key == 'P') {
+        Path p;
+        data->paths.push_back(p);
+    }
+    
+    if(selectedLoc) {
+        if(key == '1') {
+            data->paths[0].addLocation(selectedLoc);
+        }
+    }
+}
+
+void Visualizer::drawMapPoint() {
+    
+}
+
 void Visualizer::drawLocation(Location * loc) {
     
     if(loc->lat != 0 && loc->lng != 0) {
@@ -42,17 +59,21 @@ void Visualizer::drawLocation(Location * loc) {
         float aOne = loc->dir_one.sampleAt(sim->elapsedFloat);
         float aTwo = loc->dir_two.sampleAt(sim->elapsedFloat);
         
-        loc->marker = ofPoint(ofMap(loc->lat, minLat, maxLat, 20, 680), ofMap(loc->lng, minLng, maxLng, 20, 680));
+        loc->marker = ofPoint(ofMap(loc->lng, minLng, maxLng, 200, 680), ofMap(loc->lat, minLat, maxLat, 680, 200));
+        
+        
         loc->markerRadius = ofMap(aOne+aTwo, 0, data->maxCombinedStatEntry, 2, 36);
         
         ofSetColor(ofMap(aOne, 0, data->maxStatEntry, 80, 255), 100, ofMap(aTwo, 0, data->maxStatEntry, 0, 255));
         ofCircle(loc->marker, loc->markerRadius);
         
     } 
-    
-    
 }
 
+
+void Visualizer::drawTimeline() {
+    
+}
 
 void Visualizer::draw() {
     
@@ -62,9 +83,46 @@ void Visualizer::draw() {
         drawLocation(&data->locations[i]);
     }
     
+    for (int i=0; i<data->paths.size(); i++) {
+        drawPath(&data->paths[i]);
+    }
+    
     if (selectedLoc) {
         drawInterpolation(selectedLoc);
     }
+    
+}
+
+void Visualizer::drawPath(Path * path) {
+    
+    string s;
+    
+    for(int i=0; i<path->locations.size(); i++) {
+        s += path->locations[i]->road + " < -- > ";
+    }
+    
+    ofDrawBitmapString(s, ofGetWidth()-800, 200);
+    
+    if(path->dir_one.size() > 0) {
+        
+        for(int i=0; i < path->dir_one.size(); i++) {
+            ofDrawBitmapString(ofToString(path->dir_one.at(i)), (ofGetWidth()-300)+(i*(300/10)), ofGetHeight()-20);
+        }
+        
+        for(int p=0; p < 300; p++) {
+        
+            float finto = p / float(300);
+        
+            //cout<<ofToString(finto)<<endl;
+            float val = path->dir_one.sampleAt(finto);
+        
+            ofCircle(ofGetWidth()-300+p, ofMap(val, 0, data->maxStatEntry, ofGetHeight()-20, 20), 1);
+        }
+    }
+}
+
+
+void Visualizer::drawInterpolation(MSA::Interpolator1D * ipo, float width, float height, float max) {
     
 }
 
@@ -82,19 +140,17 @@ void Visualizer::drawInterpolation(Location * loc) {
     ofSetColor(255, 255, 255, 255);
     
     for(i=0; i < loc->dir_one.size(); i++) {
-        ofDrawBitmapString(ofToString(loc->dir_one.at(i)), 10+(i*(width/10)), ofGetWindowHeight()-20);
+        ofDrawBitmapString(ofToString(loc->dir_one.at(i)), 10+(i*(width/10)), ofGetHeight()-20);
         
     }
     
     for(i=0; i < loc->dir_two.size(); i++) {
         
-        ofDrawBitmapString(ofToString(loc->dir_two.at(i)), 10+(i*(width/10)), ofGetWindowHeight()-50);
+        ofDrawBitmapString(ofToString(loc->dir_two.at(i)), 10+(i*(width/10)), ofGetHeight()-50);
     }
     
-    ofDrawBitmapString(loc->road, 20, ofGetWindowHeight()-200);
-    
-    //ofPath()
-    
+    ofDrawBitmapString(loc->road, 20, ofGetHeight()-200);
+        
     ofSetColor(100, 250, 60, 200);
     
     for(i=0; i < width; i++) {
@@ -104,7 +160,7 @@ void Visualizer::drawInterpolation(Location * loc) {
         //cout<<ofToString(finto)<<endl;
         float val = loc->dir_one.sampleAt(finto);
         
-        ofCircle(10+i, ofMap(val, 0, data->maxStatEntry, ofGetWindowHeight()-20, 20), 1);
+        ofCircle(10+i, ofMap(val, 0, data->maxStatEntry, ofGetHeight()-20, 20), 1);
     }
     
     ofSetColor(250, 100, 60, 200);

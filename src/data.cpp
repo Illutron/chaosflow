@@ -1,27 +1,24 @@
 #include "data.h"
 
 void Data::setup(){
-    DATA_HOST = "http://127.0.0.1:5000";
-    
     maxStatEntry = 0;
     maxCombinedStatEntry = 0;
+    endpoint = "http://" + ofToString(DATA_HOST) + ":" + ofToString(DATA_PORT) + "/";    
 }
 
 
 void Data::update(){
-    
 }
 
 void Data::debugDraw(){
-    
 }
 
 // import all data
 void Data::getData(){
     
-    // don't do this if we already have the datan
+    // todo: don't do this if we already have the data
     
-    cout<<"Importing data ... "<<endl;
+    ofLogNotice()<<"Importing data from endpoint at "<<endpoint<<" ..."<<endl;
     
     getLocations();    
     for (int i=0; i<locations.size(); i++) {
@@ -34,9 +31,9 @@ void Data::getData(){
 
 void Data::getLocations(){
     
-    string url = DATA_HOST + "/locations";
+    ofLogNotice()<<"Importing all locations ..."<<endl;
     
-    ofHttpResponse response = ofLoadURL(url);
+    ofHttpResponse response = ofLoadURL(endpoint + "/locations");
     string responseStr = response.data;
     
     // todo: add error handling here and tell me to turn on the db and start flask
@@ -80,9 +77,10 @@ void Data::getLocations(){
 
 void Data::getStatEntries(Location* location){
     
-    //cout<<"Getting entries for "<<location->road<<endl;
+    ofLogNotice()<<"Importing stat entries for "<<location->road<<" ..."<<endl;
     
-    ofHttpResponse response = ofLoadURL(DATA_HOST + "/locations/" + location->oid + "/entries" );
+    ofHttpResponse response = ofLoadURL(endpoint + "locations/" + location->oid + "/entries" );
+    
     string responseStr = response.data;
     
     json_t* root;
@@ -112,4 +110,44 @@ void Data::getStatEntries(Location* location){
     }
     
     json_decref(root);
+}
+
+void Path::addLocation(Location * loc) {
+    locations.push_back(loc);
+    update();
+}
+
+void Path::removeLocation(int index) {
+    locations.erase(locations.begin()+index);
+    update();
+}
+
+
+void Path::update() {
+    dir_one.clear();
+    dir_two.clear();
+    
+    for(int h=0; h<DATA_HOURS; h++) {
+        int dir_one_a = 0;
+        int dir_two_a = 0;
+        
+        for(int i=0; i<locations.size(); i++) {
+            Location * loc = locations[i];
+            
+            //cout<<ofToString(loc->dir_one.size())<<" long"<<endl;
+            
+            if(loc->dir_one.size()>0) {
+                //cout<<"dir_one +"<<endl;
+                dir_one_a += loc->dir_one.at(h);
+            }
+            if(loc->dir_two.size()>0) {
+                //cout<<"dir_two +"<<endl;
+                dir_two_a += loc->dir_two.at(h);
+            }
+        }
+        
+        dir_one.push_back(dir_one_a);
+        dir_two.push_back(dir_two_a);
+    }
+
 }

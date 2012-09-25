@@ -2,19 +2,18 @@
 #include "simulator.h"
 
 void Simulator::setup(Data * dataRef, Gui * guiRef){
-    
+
     data = dataRef;
     gui = guiRef;
 
-    simDuration = 10 * 3600000;
+    simDuration = DATA_HOURS * 3600000;
     simElapsedTime = 0;
     
     lastUpdateTime = 0;
     
     speed = 1200.;
     
-    playing = false;
-    
+    gui->playToggle = false;
 }
 
 void Simulator::update(){
@@ -27,31 +26,36 @@ void Simulator::update(){
         pause();
     }
         
-    //speed = gui->simSpeed;
+    speed = gui->simSpeed;
     
     if (playing) {
         
         int updateTime = ofGetElapsedTimeMillis();
-    
-        simElapsedTime += (updateTime - lastUpdateTime) * speed;
-    
+        simElapsedTime = abs(simElapsedTime + (updateTime - lastUpdateTime) * speed);
+        
         lastUpdateTime = updateTime;
         
-        if (simElapsedTime > simDuration) {
+        if (simElapsedTime >= simDuration) {
             simElapsedTime = simDuration;
             stop();
         }
     }
+    
+    realDuration = abs(simDuration/speed);
+    realElapsedTime = abs(simElapsedTime/speed);
+    
 }
 
 void Simulator::pause(){
     if (playing) {
         playing = false;
+        gui->playToggle = false;
     }
 }
 
 void Simulator::stop(){
     playing = false;
+    gui->playToggle = false;
     simElapsedTime = 0;
 }
 
@@ -59,6 +63,7 @@ void Simulator::play(){
     if (!playing) {
         lastUpdateTime = ofGetElapsedTimeMillis();
         playing = true;
+        gui->playToggle = true;
     }
 }
 
@@ -73,11 +78,6 @@ void Simulator::debugDraw(){
     ofDrawBitmapString("Simulator time: " + formatTime(simElapsedTime) + " / " + formatTime(simDuration), 10, 40);
     
     ofDrawBitmapString("Speed: " + ofToString(speed), 10, 80);
-    
-    
-    int realDuration = simDuration/speed;
-    int realElapsedTime = simElapsedTime/speed;
-    
     
     ofDrawBitmapString("Real time: " + formatTime(realElapsedTime) + " / " + formatTime(realDuration), 10, 60);
 

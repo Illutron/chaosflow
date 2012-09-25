@@ -22,5 +22,3 @@ Run the server:
     $ python server/chaosflow.py
 
 Then you can run the openframeworks app.
-
-

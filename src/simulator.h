@@ -34,6 +34,8 @@ public:
     int simDuration;    
     int lastUpdateTime;
     int simStartOffset;
+    int realDuration;
+    int realElapsedTime;
     
     bool playing;
     

@@ -2,14 +2,21 @@
 
 void Gui::setup(){
         
-    ui = new ofxUICanvas(0,0,320,320);
+    ui = new ofxUICanvas(0,0,320,620);
+    
+    ui->setDrawBack(true);
     
     ui->addWidgetDown(new ofxUILabel("Chaotic flow", OFX_UI_FONT_MEDIUM));
     
     ui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
     
-    ui->addWidgetDown(new ofxUIToggle(32, 32, false, "PLAY/PAUSE"));
+    //ui->addWidgetDown(new ofxUIToggle(32, 32, false, "PLAY/PAUSE"));
     
+    //ui->addWidgetDown(new ofxUILabelToggle(&playToggle, "Play / Pause"));
+    ui->addToggle("Play Pause", &playToggle, 32, 32);
+    
+    ui->addWidgetDown(new ofxUIRotarySlider(32, 32, 100, -1200, 1200, &simSpeed, "Speed")); 		
+
     //ui->addWidgetDown(new ofxUISlider(32, 32, false, "PLAY/PAUSE"));
     
     //ui->addToggle("Play / Pause",playToggle,304,16);
@@ -29,7 +36,9 @@ void Gui::update(){
 }
 
 void Gui::draw(){    
-    
+    ui->draw();
+    ui->drawBack();
+    ui->ofxUIWidget::update();
 }
 
 void Gui::exit()
@@ -44,15 +53,6 @@ void Gui::guiEvent(ofxUIEventArgs &e)
     {
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
         ofSetFullscreen(toggle->getValue());   
-    } else if (e.widget->getName() == "PLAY/PAUSE") {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        
-        if(toggle->getValue()) {
-            playToggle = true;
-        } else {
-            playToggle = false;
-        }
-        
     }
 }
 

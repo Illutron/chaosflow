@@ -10,4 +10,30 @@ void flowControl::update(){
 
 void flowControl::debugDraw(){
     
+    for(int i = 0; i < NUM_CHANNELS; i++) {
+        //channels[i].
+    }
+    
+}
+
+void flowControl::injectAir(Channel * c, float duration) {
+    openWaterValve(c);
+    c->lock = true;
+    // trigger close watervalve after duration time and set lock false;
+}
+
+void flowControl::openWaterValve(Channel * c) {
+    c->waterOpen = true;
+}
+
+void flowControl::closeWaterValve(Channel * c) {
+    c->waterOpen = false;
+}
+
+void flowControl::openAirValve(Channel * c) {
+    c->airOpen = true;
+}
+
+void flowControl::closeAirValve(Channel * c) {
+    c->airOpen = false;
 }

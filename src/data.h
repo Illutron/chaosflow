@@ -6,6 +6,8 @@
 #include "ofxJansson.h"
 #include "MSAInterpolator.h"
 
+#include "defines.h"
+
 
 struct Location {
     
@@ -27,7 +29,20 @@ struct Location {
     
     MSA::Interpolator1D dir_one;
     MSA::Interpolator1D dir_two;
-        
+    
+};
+
+struct Path {
+    vector<Location*> locations;  
+    MSA::Interpolator1D dir_one;
+    MSA::Interpolator1D dir_two;
+    
+    void addLocation(Location * loc);
+    void removeLocation(int index);
+    
+    void update();
+    
+    int size() { return locations.size(); };
 };
 
 class Data {
@@ -40,6 +55,7 @@ public:
     void getData();
     
     vector<Location> locations;
+    vector<Path> paths;
     
     //double maxLat;
     //double minLat;
@@ -55,6 +71,7 @@ private:
     void getStatEntries(Location* location);
     
     ofxJansson ofxjan;
-    string DATA_HOST;    
+    
+    string endpoint;
     
 };  

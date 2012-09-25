@@ -19,7 +19,8 @@ void testApp::setup(){
     
     ofSetVerticalSync(true);    
     ofSetSphereResolution(128);
-    ofBackground(0,0,0);
+    ofBackground(50,50,50);
+    ofEnableSmoothing();
 	ofSetColor(255,255,255);
     ofEnableAlphaBlending();
     
@@ -57,6 +58,7 @@ void testApp::exit() {
 
 void testApp::keyPressed(int key){
     gui->keyPressed(key);
+    visualizer->keyPressed(key);
 }
 
 void testApp::keyReleased(int key){

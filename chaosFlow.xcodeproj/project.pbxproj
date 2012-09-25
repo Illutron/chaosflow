@@ -75,6 +75,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04163F8D16105D7900382C5C /* installationControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = installationControl.h; sourceTree = "<group>"; };
 		042338EF15F691BC00E5AE1A /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changelog.txt; sourceTree = "<group>"; };
 		042338F215F691BC00E5AE1A /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = install.xml; sourceTree = "<group>"; };
 		042338F315F691BC00E5AE1A /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -884,6 +885,7 @@
 				04CAE0A215F5052C0073E46D /* gui.cpp */,
 				04CAE0A515F520590073E46D /* visualizer.cpp */,
 				04CAE0A715F520660073E46D /* visualizer.h */,
+				04163F8D16105D7900382C5C /* installationControl.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
