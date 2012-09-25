@@ -30,7 +30,7 @@ public:
     
     void draw();
     
-    void drawLocation(Location * loc);
+    void drawDataPoint(DataPoint * point);
     void drawPath(Path * path);
     
     void drawMap();
@@ -41,13 +41,13 @@ public:
     
     void drawInterpolation(MSA::Interpolator1D * ipo, float width, float height, float max);
     
-    void drawInterpolation(Location * loc);
+    void drawInterpolation(DataPoint * point);
     
     void drawTimeline();
     
     
     Path * selectedPath;
-    Location * selectedLoc;
+    DataPoint * selectedPoint;
     
     
 };

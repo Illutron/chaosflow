@@ -1,48 +1,47 @@
 #pragma once
 
 #include "ofMain.h"
-
 #include "jansson.h"
 #include "ofxJansson.h"
 #include "MSAInterpolator.h"
-
 #include "defines.h"
 
 
 struct Location {
-    
     string oid;
+    string name;
     
-    // global coordinates
-    double  lat;
-    double  lng;
+    string dir_one_name;
+    string dir_two_name;
+    
+    double lat;
+    double lng;
+};
+
+struct DataPoint {
+    
+    string direction_name;
+    
+    MSA::Interpolator1D bikes;
+    
+    Location * loc;
     
     // local pixel coordinates in visualization
     ofPoint marker;
     float markerRadius;
-    
-    // label
-    string road;
-    
-    string dir_one_label;
-    string dir_two_label;
-    
-    MSA::Interpolator1D dir_one;
-    MSA::Interpolator1D dir_two;
-    
 };
 
 struct Path {
-    vector<Location*> locations;  
-    MSA::Interpolator1D dir_one;
-    MSA::Interpolator1D dir_two;
+    vector<DataPoint*> points;
     
-    void addLocation(Location * loc);
+    MSA::Interpolator1D sum;
+    int sum_max;
+    
+    void addPoint(DataPoint * point);
     void removeLocation(int index);
     
     void update();
-    
-    int size() { return locations.size(); };
+    int size() { return points.size(); };
 };
 
 class Data {
@@ -53,14 +52,16 @@ public:
     void debugDraw();
     
     void getData();
+    //void reloadData();
     
     vector<Location> locations;
+    vector<DataPoint> dataPoints;
     vector<Path> paths;
     
-    //double maxLat;
-    //double minLat;
-    //double maxLng;
-    //double minLng;
+    double maxLat;
+    double minLat;
+    double maxLng;
+    double minLng;
     
     int maxStatEntry;
     int maxCombinedStatEntry;

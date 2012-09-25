@@ -61,12 +61,13 @@ void Data::getLocations(){
         lng = json_object_get(data, "lng");
         
         Location loc;
+        
         loc.oid = ofxjan.getValueS(id, "$oid");
-        loc.road = ofxjan.getValueS(data, "road");
-        loc.dir_one_label = ofxjan.getValueS(data, "direction_one");
-        loc.dir_two_label = ofxjan.getValueS(data, "direction_two");
+        loc.name = ofxjan.getValueS(data, "road");
         loc.lat = json_real_value(lat);
         loc.lng = json_real_value(lng);
+        loc.dir_one_name = ofxjan.getValueS(data, "direction_one");
+        loc.dir_two_name = ofxjan.getValueS(data, "direction_two");
         
         locations.push_back(loc);
         
@@ -75,11 +76,11 @@ void Data::getLocations(){
     json_decref(root);
 }
 
-void Data::getStatEntries(Location* location){
+void Data::getStatEntries(Location* loc){
     
-    ofLogNotice()<<"Importing stat entries for "<<location->road<<" ..."<<endl;
+    ofLogNotice()<<"Importing stat entries for "<<loc->name<<" ..."<<endl;
     
-    ofHttpResponse response = ofLoadURL(endpoint + "locations/" + location->oid + "/entries" );
+    ofHttpResponse response = ofLoadURL(endpoint + "locations/" + loc->oid + "/entries" );
     
     string responseStr = response.data;
     
@@ -88,7 +89,9 @@ void Data::getStatEntries(Location* location){
     
     root = json_loads(responseStr.c_str(), &error);
     
-    int i;    
+    int i;
+    DataPoint newPoints [2];
+    
     for(i = 0; i < json_array_size(root); i++)
     {
         json_t *data, *id;
@@ -102,52 +105,49 @@ void Data::getStatEntries(Location* location){
             maxStatEntry = amount;
         }
         
-        if (direction == 1) {
-            location->dir_one.push_back(amount);
-        } else if (direction == 2) {
-            location->dir_two.push_back(amount);
-        }
+
+        newPoints[direction-1].bikes.push_back(amount);
+        
     }
+    
+    for(i = 0; i < 2; i++) {
+        newPoints[i].loc = loc;
+        dataPoints.push_back(newPoints[i]);
+    }
+    
+    
     
     json_decref(root);
 }
 
-void Path::addLocation(Location * loc) {
-    locations.push_back(loc);
+void Path::addPoint(DataPoint * point) {
+    points.push_back(point);
     update();
 }
 
 void Path::removeLocation(int index) {
-    locations.erase(locations.begin()+index);
+    points.erase(points.begin()+index);
     update();
 }
 
 
 void Path::update() {
-    dir_one.clear();
-    dir_two.clear();
+    sum.clear();
     
     for(int h=0; h<DATA_HOURS; h++) {
-        int dir_one_a = 0;
-        int dir_two_a = 0;
+        int s = 0;
         
-        for(int i=0; i<locations.size(); i++) {
-            Location * loc = locations[i];
+        for(int i=0; i<points.size(); i++) {
+            DataPoint * point = points[i];
             
             //cout<<ofToString(loc->dir_one.size())<<" long"<<endl;
             
-            if(loc->dir_one.size()>0) {
-                //cout<<"dir_one +"<<endl;
-                dir_one_a += loc->dir_one.at(h);
-            }
-            if(loc->dir_two.size()>0) {
-                //cout<<"dir_two +"<<endl;
-                dir_two_a += loc->dir_two.at(h);
+            if(point->bikes.size()>0) {
+                s += point->bikes.at(h);
             }
         }
         
-        dir_one.push_back(dir_one_a);
-        dir_two.push_back(dir_two_a);
+        sum.push_back(s);
     }
 
 }

@@ -7,3 +7,7 @@
 
 #define NUM_CHANNELS 8
 
+#define MAXLAT 55.7368
+#define MINLAT 55.6108    
+#define MAXLNG 12.6293
+#define MINLNG 12.4519
