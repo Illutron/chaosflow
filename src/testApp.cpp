@@ -5,14 +5,14 @@ void testApp::setup(){
     
     data = new Data();
     gui = new Gui();
-    visualizer = new Visualizer();
+    ui = new Interface();
     simulator = new Simulator();
     flowcontrol = new flowControl();
     
     data->setup();
     gui->setup();
     simulator->setup(data, gui);
-    visualizer->setup(data, gui, simulator);
+    ui->setup(data, gui, simulator);
     flowcontrol->setup();
     
     data->getData();
@@ -34,22 +34,20 @@ void testApp::update(){
     data->update();
     gui->update();
     simulator->update();
-    visualizer->update();
+    ui->update();
     flowcontrol->update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    visualizer->draw();
+    ui->draw();
     
     
     data->debugDraw();
-    visualizer->debugDraw();
     simulator->debugDraw();
     flowcontrol->debugDraw();
-    
-    gui->draw();
+    //gui->draw();
 }
 
 void testApp::exit() {
@@ -58,7 +56,7 @@ void testApp::exit() {
 
 void testApp::keyPressed(int key){
     gui->keyPressed(key);
-    visualizer->keyPressed(key);
+    ui->keyPressed(key);
 }
 
 void testApp::keyReleased(int key){
@@ -74,7 +72,7 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 
 void testApp::mousePressed(int x, int y, int button){
-    visualizer->mousePressed(x, y, button);
+    ui->mousePressed(x, y, button);
 }
 
 void testApp::mouseReleased(int x, int y, int button){

@@ -5,7 +5,7 @@
 #include "gui.h"
 #include "simulator.h"
 #include "flowControl.h"
-#include "visualizer.h"
+#include "interface.h"
 
 class testApp : public ofBaseApp {
 	
@@ -30,7 +30,7 @@ class testApp : public ofBaseApp {
     Gui * gui;
     Simulator * simulator;
     flowControl * flowcontrol;
-    Visualizer * visualizer;
+    Interface * ui;
     
     
 };  

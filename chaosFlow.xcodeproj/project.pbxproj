@@ -24,7 +24,7 @@
 		04CAE09D15F5003F0073E46D /* simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE09C15F5003F0073E46D /* simulator.cpp */; };
 		04CAE09F15F504FB0073E46D /* flowControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE09E15F504FB0073E46D /* flowControl.cpp */; };
 		04CAE0A315F5052C0073E46D /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE0A215F5052C0073E46D /* gui.cpp */; };
-		04CAE0A615F520590073E46D /* visualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE0A515F520590073E46D /* visualizer.cpp */; };
+		04CAE0A615F520590073E46D /* interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE0A515F520590073E46D /* interface.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -75,7 +75,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		04163F8D16105D7900382C5C /* installationControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = installationControl.h; sourceTree = "<group>"; };
 		042338EF15F691BC00E5AE1A /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = changelog.txt; sourceTree = "<group>"; };
 		042338F215F691BC00E5AE1A /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = install.xml; sourceTree = "<group>"; };
 		042338F315F691BC00E5AE1A /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -225,8 +224,8 @@
 		04CAE0A115F505210073E46D /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
 		04CAE0A215F5052C0073E46D /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
 		04CAE0A415F50CB80073E46D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		04CAE0A515F520590073E46D /* visualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = visualizer.cpp; sourceTree = "<group>"; };
-		04CAE0A715F520660073E46D /* visualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = visualizer.h; sourceTree = "<group>"; };
+		04CAE0A515F520590073E46D /* interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interface.cpp; sourceTree = "<group>"; };
+		04CAE0A715F520660073E46D /* interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interface.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -883,9 +882,8 @@
 				04CAE0A015F5050A0073E46D /* flowControl.h */,
 				04CAE0A115F505210073E46D /* gui.h */,
 				04CAE0A215F5052C0073E46D /* gui.cpp */,
-				04CAE0A515F520590073E46D /* visualizer.cpp */,
-				04CAE0A715F520660073E46D /* visualizer.h */,
-				04163F8D16105D7900382C5C /* installationControl.h */,
+				04CAE0A515F520590073E46D /* interface.cpp */,
+				04CAE0A715F520660073E46D /* interface.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1000,7 +998,7 @@
 				04CAE09D15F5003F0073E46D /* simulator.cpp in Sources */,
 				04CAE09F15F504FB0073E46D /* flowControl.cpp in Sources */,
 				04CAE0A315F5052C0073E46D /* gui.cpp in Sources */,
-				04CAE0A615F520590073E46D /* visualizer.cpp in Sources */,
+				04CAE0A615F520590073E46D /* interface.cpp in Sources */,
 				0423390B15F69DFC00E5AE1A /* Color.cpp in Sources */,
 				0423390C15F69DFC00E5AE1A /* MSACoreGL.cpp in Sources */,
 			);

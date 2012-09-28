@@ -8,7 +8,7 @@
 #include "simulator.h"
 #include "defines.h"
 
-class Visualizer {
+class Interface {
 public:
 	void setup(Data * dataRef, Gui * guiRef, Simulator * simRef);
 	void update();
@@ -26,24 +26,26 @@ public:
     double maxLat;
     double maxLng;
     
-	void debugDraw();
     
+    float pad;
+       
     void draw();
     
-    void drawDataPoint(DataPoint * point);
-    void drawPath(Path * path);
+    void drawMap(float x1, float y1, float w, float h);
+    void drawMapPoint(DataPoint * point);
+    void drawTimeline(float x1, float y1, float w, float h);
     
-    void drawMap();
+    void drawDetailInspector(float x1, float y1, float w, float h);
+    
+    
+    void drawPath(Path * path);
     
     void drawMapPoint();
     
     void drawMapPath();
     
-    void drawInterpolation(MSA::Interpolator1D * ipo, float width, float height, float max);
     
-    void drawInterpolation(DataPoint * point);
-    
-    void drawTimeline();
+    void drawInterpolation(MSA::Interpolator1D * ipo, float x1, float y1, float w, float h);
     
     
     Path * selectedPath;

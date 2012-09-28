@@ -2,7 +2,7 @@
 
 void Gui::setup(){
         
-    ui = new ofxUICanvas(0,0,320,620);
+    ui = new ofxUICanvas(0,0,0,0);
     
     ui->setDrawBack(true);
     

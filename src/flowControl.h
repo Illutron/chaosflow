@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "data.h"
 #include "defines.h"
 
 struct Channel {
@@ -15,6 +16,8 @@ public:
     
     bool lock; // when lock true the channel does not accept new valve commands
     // maybe do a vector of waiting commands
+    
+    Path * path;
 };
 
 class flowControl {

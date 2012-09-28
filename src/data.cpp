@@ -90,6 +90,7 @@ void Data::getStatEntries(Location* loc){
     root = json_loads(responseStr.c_str(), &error);
     
     int i;
+
     DataPoint newPoints [2];
     
     for(i = 0; i < json_array_size(root); i++)
@@ -105,14 +106,17 @@ void Data::getStatEntries(Location* loc){
             maxStatEntry = amount;
         }
         
-
+        newPoints[direction-1].sum += amount;
         newPoints[direction-1].bikes.push_back(amount);
         
     }
     
     for(i = 0; i < 2; i++) {
-        newPoints[i].loc = loc;
-        dataPoints.push_back(newPoints[i]);
+        
+        if (newPoints[i].sum != 0) {
+            newPoints[i].loc = loc;
+            dataPoints.push_back(newPoints[i]);
+        }
     }
     
     

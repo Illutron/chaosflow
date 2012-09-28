@@ -68,19 +68,6 @@ void Simulator::play(){
 }
 
 void Simulator::debugDraw(){
-    ofFill();
-    
-    ofSetColor(100, 100, 100);
-    ofRect(10, 10, ofGetWindowWidth()-20, 10);
-    ofSetColor(255, 255, 255);
-    ofRect(10, 10, ofMap(simElapsedTime,0,simDuration,0,ofGetWindowWidth()-20), 10);
-    
-    ofDrawBitmapString("Simulator time: " + formatTime(simElapsedTime) + " / " + formatTime(simDuration), 10, 40);
-    
-    ofDrawBitmapString("Speed: " + ofToString(speed), 10, 80);
-    
-    ofDrawBitmapString("Real time: " + formatTime(realElapsedTime) + " / " + formatTime(realDuration), 10, 60);
-
     
 }
 

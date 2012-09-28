@@ -23,6 +23,7 @@ struct DataPoint {
     string direction_name;
     
     MSA::Interpolator1D bikes;
+    int sum;
     
     Location * loc;
     
