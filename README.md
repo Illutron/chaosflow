@@ -10,6 +10,7 @@ You can get mongo db using npm. Get node and npm from http://nodejs.org/download
 
 Set up a python virtualenv and isntall requirements:
 Get virtualenv and pip from http://www.pip-installer.org/.
+
     $ mkvirtualenv chaosflow
     $ pip install -r data-utils/requirements.txt
 
