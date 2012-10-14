@@ -41,9 +41,13 @@ void setup() {
     airRegulatorPins[2] = 3; 
 }
 
+char inData[80];
+char parsedData[80];
+byte index = 0;
+
 void loop() {
 
-        // send data only when you receive data:
+        // send data only when yoSu receive data:
         if (!Serial.available()) {
           // no data
           if (state == 2) {
@@ -65,12 +69,37 @@ void loop() {
           // say what you got:
           Serial.print("I received: ");
           Serial.println(incomingByte, DEC);
+          
+          while(Serial.available() > 0) {
+            char aChar = Serial.read();
+            if(aChar == '\n') {
+               // End of record detected. Time to parse
+             
+               char *p = inData; //assign the string to *p
+               char *str;        //intialize str
+               int counter = 0; //initialise the counter
+               
+               // data format is channel number int; air pressure float 0-1, water pressure float 0-1, air open bool, water open bool,
+               while ((str = strtok_r(p, ";", &p)) != "\0") // delimiter is the comma. NULL is the terminator
+               {
+                  parsedData[counter] = *str; //use the counter as an index to add each value to the array
+                  counter++; //increment the counter
+
+                  p = NULL;
+               }
+             
+               index = 0;
+               inData[index] = NULL;
+            } else {
+             inData[index] = aChar;
+             index++;
+             inData[index] = '\0'; // Keep the string NULL terminated
+            }
+          }
         }
         
         if (state=0) {
-          
-          //auto control here
-          
+          //auto control here   
         }
         
 }
