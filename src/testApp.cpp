@@ -1,3 +1,4 @@
+
 #include "testApp.h"
 
 //--------------------------------------------------------------
@@ -12,7 +13,7 @@ void testApp::setup(){
     data->setup();
     gui->setup();
     simulator->setup(data, gui);
-    ui->setup(data, gui, simulator);
+    ui->setup(data, gui, simulator, flowcontrol);
     flowcontrol->setup();
     
     data->getData();
@@ -57,6 +58,7 @@ void testApp::exit() {
 void testApp::keyPressed(int key){
     gui->keyPressed(key);
     ui->keyPressed(key);
+    
 }
 
 void testApp::keyReleased(int key){

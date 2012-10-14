@@ -3,7 +3,13 @@
 void Data::setup(){
     maxStatEntry = 0;
     maxCombinedStatEntry = 0;
-    endpoint = "http://" + ofToString(DATA_HOST) + ":" + ofToString(DATA_PORT) + "/";    
+    endpoint = "http://" + ofToString(DATA_HOST) + ":" + ofToString(DATA_PORT) + "/";
+    
+    /*
+    NSString *path = @"/Users/johan/dev/openframeworks/apps/myApps/chaosFlow/data-utils";
+    NSArray *args = [NSArray arrayWithObjects:..., nil];
+    [[NSTask launchedTaskWithLaunchPath:path arguments:args] waitUntilExit];
+     */    
 }
 
 
@@ -66,8 +72,8 @@ void Data::getLocations(){
         loc.name = ofxjan.getValueS(data, "road");
         loc.lat = json_real_value(lat);
         loc.lng = json_real_value(lng);
-        loc.dir_one_name = ofxjan.getValueS(data, "direction_one");
-        loc.dir_two_name = ofxjan.getValueS(data, "direction_two");
+        loc.dir_names[0] = ofxjan.getValueS(data, "direction_one");
+        loc.dir_names[1] = ofxjan.getValueS(data, "direction_two");
         
         locations.push_back(loc);
         
@@ -92,6 +98,8 @@ void Data::getStatEntries(Location* loc){
     int i;
 
     DataPoint newPoints [2];
+    newPoints[0].sum = 0;
+    newPoints[1].sum = 0;
     
     for(i = 0; i < json_array_size(root); i++)
     {
@@ -106,6 +114,7 @@ void Data::getStatEntries(Location* loc){
             maxStatEntry = amount;
         }
         
+        newPoints[direction-1].direction = direction-1;
         newPoints[direction-1].sum += amount;
         newPoints[direction-1].bikes.push_back(amount);
         
@@ -113,15 +122,34 @@ void Data::getStatEntries(Location* loc){
     
     for(i = 0; i < 2; i++) {
         
-        if (newPoints[i].sum != 0) {
+        if (newPoints[i].sum > 0) {
             newPoints[i].loc = loc;
+            newPoints[i].i = dataPoints.size();
+            
+            //cout<<ofToString(newPoints[i].sum)<<endl;
+            
             dataPoints.push_back(newPoints[i]);
+            
         }
     }
     
-    
-    
     json_decref(root);
+}
+
+
+DataPoint* Data::getNextPoint(DataPoint * point) {
+    if(point->i >= dataPoints.size()-1) {
+        return &dataPoints[0];
+    } else {
+        return &dataPoints[point->i+1];
+    }
+}
+DataPoint* Data::getPreviousPoint(DataPoint * point) {
+    if(point->i <= 0) {
+        return &dataPoints[dataPoints.size()-1];
+    } else {
+        return &dataPoints[point->i-1];
+    }
 }
 
 void Path::addPoint(DataPoint * point) {

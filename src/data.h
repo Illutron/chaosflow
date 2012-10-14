@@ -8,19 +8,29 @@
 
 
 struct Location {
+    int index;
+    
     string oid;
     string name;
     
-    string dir_one_name;
-    string dir_two_name;
+    string dir_names [2];
     
     double lat;
     double lng;
 };
 
 struct DataPoint {
+    int i; // index
     
-    string direction_name;
+    int direction;
+    
+    string getDirName() {
+        return loc->dir_names[direction];
+    }
+    
+    string getLabel() {
+        return loc->name + " - " + loc->dir_names[direction];
+    }
     
     MSA::Interpolator1D bikes;
     int sum;
@@ -33,6 +43,8 @@ struct DataPoint {
 };
 
 struct Path {
+    int index;
+    
     vector<DataPoint*> points;
     
     MSA::Interpolator1D sum;
@@ -57,6 +69,10 @@ public:
     
     vector<Location> locations;
     vector<DataPoint> dataPoints;
+    
+    DataPoint* getNextPoint(DataPoint * point);
+    DataPoint* getPreviousPoint(DataPoint * point);
+    
     vector<Path> paths;
     
     double maxLat;

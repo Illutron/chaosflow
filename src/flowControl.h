@@ -39,5 +39,4 @@ public:
     void closeWaterValve(Channel * c);
     void setWaterPressure(Channel * c, float pressure);
     
-    
 };

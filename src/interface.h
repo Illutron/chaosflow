@@ -3,14 +3,16 @@
 // This module has functions for visualizing the data. Does it also handle interface events like making paths or should I add this to data? Maybe add it all to gui class?
 
 #include "ofMain.h"
+#include "defines.h"
 #include "gui.h"
 #include "data.h"
 #include "simulator.h"
-#include "defines.h"
+#include "flowControl.h"
+
 
 class Interface {
 public:
-	void setup(Data * dataRef, Gui * guiRef, Simulator * simRef);
+	void setup(Data * dataRef, Gui * guiRef, Simulator * simRef, flowControl * flowRef);
 	void update();
     
     void mousePressed(int x, int y, int button);
@@ -19,6 +21,7 @@ public:
     Data * data;
     Gui * gui;
     Simulator * sim;
+    flowControl * flow;
     
     // calibration
     double minLat;
@@ -37,6 +40,7 @@ public:
     
     void drawDetailInspector(float x1, float y1, float w, float h);
     
+    void drawOutput(float x1, float y1, float w, float h);
     
     void drawPath(Path * path);
     

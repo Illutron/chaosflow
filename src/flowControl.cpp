@@ -10,10 +10,6 @@ void flowControl::update(){
 
 void flowControl::debugDraw(){
     
-    for(int i = 0; i < NUM_CHANNELS; i++) {
-        //channels[i].
-    }
-    
 }
 
 void flowControl::injectAir(Channel * c, float duration) {
