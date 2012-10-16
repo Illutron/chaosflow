@@ -6,6 +6,8 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
+    ofSetLogLevel(OF_LOG_SILENT);
+    
     data = new Data();
     flowcontrol = new flowControl();
     ui = new Interface();
@@ -15,8 +17,6 @@ void testApp::setup(){
     flowcontrol->setup();
     simulator->setup(data, flowcontrol);
     ui->setup(data, simulator, flowcontrol);
-    
-    data->getData();
     
     ofSetVerticalSync(true);    
     ofSetSphereResolution(128);

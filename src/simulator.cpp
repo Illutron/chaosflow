@@ -11,8 +11,24 @@ void Simulator::setup(Data * dataRef, flowControl * flowRef){
     
     lastUpdateTime = 0;
     
-    speed = 2.;
+    speed = 20.;
     //gui->playToggle = false;
+    
+    
+    stoPeriod = 100;
+    
+    baseBikeDuration = 100;
+    
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        flow->channels[i].path = &data->paths[i];   
+        
+        flow->channels[i].path->hasBike = false;
+        flow->channels[i].path->timeToNextBike = 600;
+        flow->channels[i].path->singleBikeDuration = 100;
+        flow->channels[i].path->lastBike = 0;
+        
+    }
+    
 }
 
 void Simulator::update(){
@@ -51,12 +67,68 @@ void Simulator::update(){
 }
 
 void Simulator::simulatePath(Channel * c) {
-    //c->path->sum_max;
-    //c->path->sum.at(elapsedFloat);
     
+    if(c->path) {
+        
+        c->path->trafficf = ofMap(c->path->sum.sampleAt(elapsedFloat), 0, maxPathSum, 0, 1);
+        
+        c->waterPressure = c->path->trafficf;
+        c->airPressure = ofMap(c->path->trafficf, 0, 1, 0.2, 0.4);
+        
+        
+        //hasBike;
+        
+        if (ofGetFrameNum() % 8 == 0) {
+            c->path->timeToNextBike = ofMap(c->path->trafficf, 0, 1, 6000, 100) + ofMap(ofNoise(elapsedFloat), -1, 1, 2000, 0); 
+            c->path->singleBikeDuration = ofMap(c->path->trafficf, 0, 1, 1000, 20) + ofMap(ofNoise(elapsedFloat), -1, 1, 200, 0);
+        }
+        
+        if(c->path->hasBike) {
+            if(ofGetElapsedTimeMillis() - c->path->lastBike > c->path->singleBikeDuration) {
+                c->path->hasBike = false;
+            }
+        } else {
+            if(ofGetElapsedTimeMillis() - c->path->lastBike > c->path->timeToNextBike) {
+                c->path->hasBike = true;
+                c->path->lastBike = ofGetElapsedTimeMillis();
+            }
+        }
+        
+        if(c->path->hasBike) {
+            c->airOpen = true;
+            c->waterOpen = false;
+        } else {
+            c->airOpen = false;
+            c->waterOpen = true;
+        }
+        
+        
+        
+        /* very simple rough working version
+            if ( ofRandomf() < ofMap(c->path->sum.sampleAt(elapsedFloat), 0, maxPathSum, 0, 1) ) {
+                if (c->waterOpen) {
+                    c->waterOpen = false;
+                    c->airOpen = true;
+                } else {
+                    c->waterOpen = true;
+                    c->airOpen = false;
+                }
+            }
+        */
+        // add a kind of noise to the chance
+    }
 }   
 
-void Simulator::simulatePaths() {
+void Simulator::simulatePaths() {    
+    // add an if editing mode to improve performance
+    maxPathSum = 0;
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        if(flow->channels[i].path) {
+            if (flow->channels[i].path->sum_max > maxPathSum) {
+                maxPathSum = flow->channels[i].path->sum_max;
+            }
+        }
+    }
     
     for (int i = 0; i < NUM_CHANNELS; i++) {
         simulatePath(&flow->channels[i]);

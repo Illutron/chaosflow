@@ -11,10 +11,18 @@ void Data::setup(){
     [[NSTask launchedTaskWithLaunchPath:path arguments:args] waitUntilExit];
      */
     
+    getData();
+    
+    
+    for(int i=0; i < NUM_CHANNELS; i++) {
+        paths[i].i = i;
+    }
+    
 }
 
 
 void Data::update(){
+    
 }
 
 void Data::debugDraw(){
@@ -24,7 +32,6 @@ void Data::debugDraw(){
 void Data::getData(){
     
     // todo: don't do this if we already have the data
-    
     ofLogNotice()<<"Importing data from endpoint at "<<endpoint<<" ..."<<endl;
     
     getLocations();    
@@ -33,7 +40,6 @@ void Data::getData(){
     }
     
     maxCombinedStatEntry = maxStatEntry * 2; // do this properly
-    
 }
 
 void Data::getLocations(){
@@ -154,7 +160,7 @@ DataPoint* Data::getPreviousPoint(DataPoint * point) {
 }
 
 Path* Data::getNextPath(Path * path) {
-    if(path->i >= paths.size()-1) {
+    if(path->i >= NUM_CHANNELS-1) {
         return &paths[0];
     } else {
         return &paths[path->i+1];
@@ -162,7 +168,7 @@ Path* Data::getNextPath(Path * path) {
 }
 Path* Data::getPreviousPath(Path * path) {
     if(path->i <= 0) {
-        return &paths[paths.size()-1];
+        return &paths[NUM_CHANNELS-1];
     } else {
         return &paths[path->i-1];
     }

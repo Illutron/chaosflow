@@ -14,6 +14,9 @@ public:
     float airPressure;
     float waterPressure;
     
+    long airOpenSince;
+    long waterOpenSince;  
+    
     bool airOpen;
     bool waterOpen;
     

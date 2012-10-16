@@ -32,6 +32,7 @@ struct DataPoint {
         return loc->name + " - " + loc->dir_names[direction];
     }
     
+    
     MSA::Interpolator1D bikes;
     int sum;
     
@@ -46,6 +47,13 @@ struct Path {
     int i; //index
     
     vector<DataPoint*> points;
+    
+    bool hasBike;
+    float timeToNextBike;
+    float singleBikeDuration;
+    float lastBike;
+    
+    float trafficf;
     
     MSA::Interpolator1D sum;
     int sum_max;
@@ -77,7 +85,8 @@ public:
     Path* getNextPath(Path * path);
     Path* getPreviousPath(Path * path);
     
-    vector<Path> paths;
+    //vector<Path> paths;
+    Path paths [NUM_CHANNELS];
     
     double maxLat;
     double minLat;
@@ -91,7 +100,6 @@ private:
     
     void getLocations();
     void getStatEntries(Location* location);
-    
     ofxJansson ofxjan;
     
     string endpoint;

@@ -42,4 +42,13 @@ public:
     
     bool playing;
     
+    int maxPathSum;
+    
+    // variables for stachastic process simulation
+    float stoPeriod;
+    float minStoPeriod;
+    float maxStoPeriod;
+    
+    float baseBikeDuration;
+    
 };

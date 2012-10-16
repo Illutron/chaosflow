@@ -13,6 +13,8 @@ void Interface::setup(Data * dataRef, Simulator * simRef, flowControl * flowRef)
     pad = 8;
     
     selectedChannel = &flow->channels[0];
+    selectedPath = &data->paths[0];
+    selectedPoint = &data->dataPoints[0];
 }
 
 void Interface::update(){
@@ -29,13 +31,13 @@ void Interface::draw() {
     
     ofFill(); 
     ofBackground(0, 0, 0);
+    ofSetColor(255);
     
     float w = ofGetWidth();
     float h = ofGetHeight();
             
     // draw settings area 
-    //ofSetColor(50);
-    ofRect(0, 0, w*0.25, h*0.5);
+    
     
     // draw path selector area
     drawPathInspector(0, 0, w*0.5, h*0.5);
@@ -63,6 +65,23 @@ void Interface::draw() {
     if (selectedPoint) {
         drawInterpolation(&selectedPoint->bikes, 20., 800., 700., 400.);
     }*/
+    
+    
+    ofSetColor(20, 20, 255);
+    if(selectedPath){
+        ofDrawBitmapString("Selected path: " + ofToString(selectedPath->i), 20, 20);
+        ofDrawBitmapString("   Sum max: " + ofToString(selectedPath->sum_max), 20, 40);
+    }
+    if(selectedPoint){
+        ofDrawBitmapString("Selected point: " + ofToString(selectedPoint->i), 20, 80);
+    }
+    if(selectedChannel){
+        ofDrawBitmapString("Selected channel: " + ofToString(selectedChannel->i), 20, 140);
+    }
+    
+    ofSetColor(255,20,20);
+    ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), 20, 180);
+    
     
 }
 
@@ -93,7 +112,7 @@ void Interface::drawOutput(float x, float y, float w, float h) {
         ofDrawBitmapString(ofToString(c->airOpen), wo+pad, pad*10);
         
         if(c->path) {
-            drawInterpolation(&c->path->sum, c->path->sum_max, false,  wo, 100, cw, 100);
+            drawInterpolation(&c->path->sum, sim->maxPathSum, false,  wo, 100, cw, 100);
         }
     }
     
@@ -165,9 +184,7 @@ void Interface::drawInterpolation(MSA::Interpolator1D * ipo, float max, bool lab
             }
         }
     }
-    
     ofPopMatrix();
-    
 }
 
 void Interface::mousePressed(int x, int y, int button){
@@ -228,17 +245,6 @@ void Interface::keyPressed(int key){
             }
     }
     
-    if(key == 'P') {
-        Path p;
-        data->paths.push_back(p);
-        
-        for (int i = 0; i < data->paths.size(); i++) {
-            data->paths[i].i = i;
-            selectedPath = &data->paths[i];
-        }
-        
-    }	
-    
 }
 
 void Interface::drawPathInspector(float x, float y, float w, float h) {
@@ -248,7 +254,6 @@ void Interface::drawPathInspector(float x, float y, float w, float h) {
     
     if(selectedPath) {
         
-        ofDrawBitmapString(ofToString(selectedPath->i), pad, pad);
         drawInterpolation(&selectedPath->sum, selectedPath->sum_max, 0, 0, w, h);
         
         // list of points
@@ -267,7 +272,7 @@ void Interface::drawPathList(float x, float y, float w, float h) {
     
     ofSetColor(255);
         
-    for(int i = 0; i < data->paths.size(); i++) {
+    for(int i = 0; i < NUM_CHANNELS; i++) {
         ofDrawBitmapString("Path of " + ofToString(data->paths[i].size()) + " points", pad, 20 + (i*20));
     }
     
