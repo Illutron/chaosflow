@@ -4,7 +4,6 @@
 
 #include "ofMain.h"
 #include "defines.h"
-#include "gui.h"
 #include "data.h"
 #include "simulator.h"
 #include "flowControl.h"
@@ -12,14 +11,15 @@
 
 class Interface {
 public:
-	void setup(Data * dataRef, Gui * guiRef, Simulator * simRef, flowControl * flowRef);
+	void setup(Data * dataRef, Simulator * simRef, flowControl * flowRef);
 	void update();
     
     void mousePressed(int x, int y, int button);
     void keyPressed(int key);
     
+    void randomData();
+    
     Data * data;
-    Gui * gui;
     Simulator * sim;
     flowControl * flow;
     
@@ -28,8 +28,7 @@ public:
     double minLng;
     double maxLat;
     double maxLng;
-    
-    
+        
     float pad;
        
     void draw();
@@ -38,22 +37,27 @@ public:
     void drawMapPoint(DataPoint * point);
     void drawTimeline(float x1, float y1, float w, float h);
     
-    void drawDetailInspector(float x1, float y1, float w, float h);
+    void drawPointInspector(float x1, float y1, float w, float h);
     
     void drawOutput(float x1, float y1, float w, float h);
     
-    void drawPath(Path * path);
+    void drawPathList(float x1, float y1, float w, float h);
+    
+    void drawPathInspector(float x1, float y1, float w, float h);
+    
+    void drawPathLabel(Path * path);
     
     void drawMapPoint();
     
     void drawMapPath();
     
-    
     void drawInterpolation(MSA::Interpolator1D * ipo, float x1, float y1, float w, float h);
-    
+    void drawInterpolation(MSA::Interpolator1D * ipo, float max, float x1, float y1, float w, float h);
+    void drawInterpolation(MSA::Interpolator1D * ipo, float max, bool labels, float x1, float y1, float w, float h);
     
     Path * selectedPath;
     DataPoint * selectedPoint;
+    Channel * selectedChannel;
     
     
 };

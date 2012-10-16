@@ -1,20 +1,20 @@
 
 #include "testApp.h"
 
+// to do update interpolator to version at https://github.com/memo/ofxMSAInterpolator
+
 //--------------------------------------------------------------
 void testApp::setup(){
     
     data = new Data();
-    gui = new Gui();
+    flowcontrol = new flowControl();
     ui = new Interface();
     simulator = new Simulator();
-    flowcontrol = new flowControl();
     
     data->setup();
-    gui->setup();
-    simulator->setup(data, gui);
-    ui->setup(data, gui, simulator, flowcontrol);
     flowcontrol->setup();
+    simulator->setup(data, flowcontrol);
+    ui->setup(data, simulator, flowcontrol);
     
     data->getData();
     
@@ -25,7 +25,6 @@ void testApp::setup(){
 	ofSetColor(255,255,255);
     ofEnableAlphaBlending();
     
-    gui->loadSettings();
     simulator->play();
 }
 
@@ -33,7 +32,6 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
     data->update();
-    gui->update();
     simulator->update();
     ui->update();
     flowcontrol->update();
@@ -42,23 +40,21 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     
-    ui->draw();
     
     
     data->debugDraw();
     simulator->debugDraw();
     flowcontrol->debugDraw();
-    //gui->draw();
+    
+    ui->draw();
 }
 
 void testApp::exit() {
-    gui->exit();
+    //ui->exit();
 }
 
 void testApp::keyPressed(int key){
-    gui->keyPressed(key);
-    ui->keyPressed(key);
-    
+    ui->keyPressed(key);    
 }
 
 void testApp::keyReleased(int key){

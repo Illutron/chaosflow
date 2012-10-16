@@ -1,8 +1,7 @@
 #include "interface.h"
 
-void Interface::setup(Data * dataRef, Gui * guiRef, Simulator * simRef, flowControl * flowRef){
+void Interface::setup(Data * dataRef, Simulator * simRef, flowControl * flowRef){
     data = dataRef;
-    gui = guiRef;
     sim = simRef;
     flow = flowRef;
     
@@ -12,12 +11,17 @@ void Interface::setup(Data * dataRef, Gui * guiRef, Simulator * simRef, flowCont
     minLng = 12.4519;
     
     pad = 8;
-
+    
+    selectedChannel = &flow->channels[0];
 }
 
 void Interface::update(){
     
     // update locations for stuff that is clickable here ?
+    
+}
+
+void Interface::randomData() {
     
 }
 
@@ -31,20 +35,16 @@ void Interface::draw() {
             
     // draw settings area 
     //ofSetColor(50);
-    //ofRect(0, 0, w*0.25, h*0.5);
+    ofRect(0, 0, w*0.25, h*0.5);
     
     // draw path selector area
-    //ofSetColor(100);
-    //ofRect(w*0.25, 0, w*0.25, h*0.5);
-    
-    //drawPathList();
+    drawPathInspector(0, 0, w*0.5, h*0.5);
     
     // draw map 50% 0, 100%, 60%
     drawMap(w*0.5+pad, 0+pad, (w*0.5)-(2*pad), (h*0.5)-(2*pad));
     
     // draw detail inspection view / path editor 
-    drawDetailInspector(0, h*0.5, w*0.5, h*0.45);
-    
+    drawPointInspector(0, h*0.5, w*0.5, h*0.45);
     
     // draw output view 
     //ofSetColor(60);
@@ -75,19 +75,26 @@ void Interface::drawOutput(float x, float y, float w, float h) {
     
     for(int i=0; i < NUM_CHANNELS; i++) {
         
-        //ofPushMatrix();
-        //ofTranslate((w/NUM_CHANNELS)*i, y);
+        Channel * c = &flow->channels[i];
         
         float wo = (w/NUM_CHANNELS)*i;
         
         ofSetColor(255, 100, 100);
+        if(c == selectedChannel) {
+            ofSetColor(255, 255, 255);
+        }
+        
         ofRect(wo, 0, cw, h);
         
-        ofDrawBitmapString(ofToString(flow->channels[i].airPressure), wo+pad, pad*2);
+        ofDrawBitmapString("Cha: " + ofToString(c->i), wo+pad, pad*2);
+        ofDrawBitmapString(ofToString(c->airPressure), wo+pad, pad*4);
+        ofDrawBitmapString(ofToString(c->waterPressure), wo+pad, pad*6);
+        ofDrawBitmapString(ofToString(c->waterOpen), wo+pad, pad*8);
+        ofDrawBitmapString(ofToString(c->airOpen), wo+pad, pad*10);
         
-        ofDrawBitmapString(ofToString(flow->channels[i].waterPressure), wo+pad, pad*4);
-        
-        //ofPopMatrix;
+        if(c->path) {
+            drawInterpolation(&c->path->sum, c->path->sum_max, false,  wo, 100, cw, 100);
+        }
     }
     
     ofPopMatrix();
@@ -113,14 +120,13 @@ void Interface::drawMap(float x, float y, float w,  float h) {
                     ofSetColor(255,0,0);
                 }
             }
-            
             ofCircle(point->marker, point->markerRadius);
             
         }
     }
 }
 
-void Interface::drawDetailInspector(float x, float y, float w, float h) {
+void Interface::drawPointInspector(float x, float y, float w, float h) {
     
     // add modes so this can either display selected point or selected path
     // draw point details
@@ -131,23 +137,33 @@ void Interface::drawDetailInspector(float x, float y, float w, float h) {
         ofDrawBitmapString(selectedPoint->getLabel(), pad, pad);
         drawInterpolation(&selectedPoint->bikes, 0, 0, w, h);
         ofPopMatrix();
-    } else if (selectedPath) {
-        
     }
-    
 }
 
+
 void Interface::drawInterpolation(MSA::Interpolator1D * ipo, float x, float y, float w, float h) {
+    drawInterpolation(ipo, data->maxStatEntry, true, x, y, w, h);
+}
+
+void Interface::drawInterpolation(MSA::Interpolator1D * ipo, float max, float x, float y, float w, float h) {
+    drawInterpolation(ipo, max, true, x, y, w, h);
+}
+
+void Interface::drawInterpolation(MSA::Interpolator1D * ipo, float max, bool labels, float x, float y, float w, float h) {
     // curve
     ofPushMatrix();
     ofTranslate(x, y);
     
-    for(int i=0; i < w; i++) {
-        ofCircle(i, ofMap(ipo->sampleAt(i/w), 0, data->maxStatEntry, h, 0), 1);
-    }
-    // labels
-    for(int i=0; i < ipo->size(); i++) {
-        ofDrawBitmapString(ofToString(ipo->at(i)), (i*w/ipo->size()), h-pad);
+    if(ipo) {
+        for(int i=0; i < w; i++) {
+            ofCircle(i, ofMap(ipo->sampleAt(i/w), 0, max, h, 0), 1);
+        }
+        // labels
+        if(labels) {
+            for(int i=0; i < ipo->size(); i++) {
+                ofDrawBitmapString(ofToString(ipo->at(i)), (i*w/ipo->size()), h-pad);
+            }
+        }
     }
     
     ofPopMatrix();
@@ -166,7 +182,6 @@ void Interface::mousePressed(int x, int y, int button){
 
 
 void Interface::keyPressed(int key){
-    
     if(selectedPoint) {
         if(key == 'n') {
             selectedPoint = data->getNextPoint(selectedPoint);
@@ -174,16 +189,37 @@ void Interface::keyPressed(int key){
         if(key == 'b') {
             selectedPoint = data->getPreviousPoint(selectedPoint);
         }
+    }
     
-        if(key == 'P') {
-            Path p;
-            data->paths.push_back(p);
+    if(selectedPath) {
+        if(key == 'h') {
+            selectedPath = data->getNextPath(selectedPath);
         }
+        if(key == 'g') {
+            selectedPath = data->getPreviousPath(selectedPath);
+        }
+        
+        if(key == 'a') {
+            if(selectedPoint) {
+                selectedPath->addPoint(selectedPoint);
+            }
+        }
+    }
     
-        if(key == '1') {
-            
-            data->paths[0].addPoint(selectedPoint);
+    if(selectedChannel) {
+        if(key == 'y') {
+            selectedChannel = flow->getNextChannel(selectedChannel);
         }
+        if(key == 't') {
+            selectedChannel = flow->getPreviousChannel(selectedChannel);
+        }
+        
+        if(key == 'q') {
+            if(selectedPath) {
+                selectedChannel->path = selectedPath;
+            }
+        }
+        
     }
     
     if(key == 'R') {
@@ -192,33 +228,52 @@ void Interface::keyPressed(int key){
             }
     }
     
-}
-
-
-void Interface::drawPath(Path * path) {
-    
-    string s;
-    
-    for(int i=0; i<path->points.size(); i++) {
-       s += path->points[i]->loc->name + " < -- > ";
-    }
-    
-    ofDrawBitmapString(s, ofGetWidth()-800, 200);
-    
-    if(path->points.size() > 0) {
+    if(key == 'P') {
+        Path p;
+        data->paths.push_back(p);
         
-        for(int i=0; i < path->points.size(); i++) {
-            ofDrawBitmapString(ofToString(path->sum.at(i)), (ofGetWidth()-300)+(i*(300/10)), ofGetHeight()-20);
+        for (int i = 0; i < data->paths.size(); i++) {
+            data->paths[i].i = i;
+            selectedPath = &data->paths[i];
         }
         
-        for(int p=0; p < 300; p++) {
-            float finto = p / float(300);
-            //cout<<ofToString(finto)<<endl;
-            float val = path->sum.sampleAt(finto);
-            ofCircle(ofGetWidth()-300+p, ofMap(val, 0, data->maxStatEntry, ofGetHeight()-20, 20), 1);
+    }	
+    
+}
+
+void Interface::drawPathInspector(float x, float y, float w, float h) {
+    ofPushMatrix();
+    ofTranslate(x, y);
+    ofSetColor(255);
+    
+    if(selectedPath) {
+        
+        ofDrawBitmapString(ofToString(selectedPath->i), pad, pad);
+        drawInterpolation(&selectedPath->sum, selectedPath->sum_max, 0, 0, w, h);
+        
+        // list of points
+        for(int i=0; i<selectedPath->points.size(); i++) {
+            // path->points[i]->loc->name;
         }
     }
+    
+    ofPopMatrix();
+    
 }
+
+void Interface::drawPathList(float x, float y, float w, float h) {
+    ofPushMatrix();
+    ofTranslate(x, y);
+    
+    ofSetColor(255);
+        
+    for(int i = 0; i < data->paths.size(); i++) {
+        ofDrawBitmapString("Path of " + ofToString(data->paths[i].size()) + " points", pad, 20 + (i*20));
+    }
+    
+    ofPopMatrix();
+}
+
 
 void Interface::drawTimeline(float x, float y, float w, float h) {
     ofPushMatrix();

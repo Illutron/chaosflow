@@ -23,7 +23,6 @@
 		04CAE09915F4E6690073E46D /* data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE09815F4E6690073E46D /* data.cpp */; };
 		04CAE09D15F5003F0073E46D /* simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE09C15F5003F0073E46D /* simulator.cpp */; };
 		04CAE09F15F504FB0073E46D /* flowControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE09E15F504FB0073E46D /* flowControl.cpp */; };
-		04CAE0A315F5052C0073E46D /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE0A215F5052C0073E46D /* gui.cpp */; };
 		04CAE0A615F520590073E46D /* interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE0A515F520590073E46D /* interface.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -221,8 +220,6 @@
 		04CAE09C15F5003F0073E46D /* simulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simulator.cpp; sourceTree = "<group>"; };
 		04CAE09E15F504FB0073E46D /* flowControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = flowControl.cpp; sourceTree = "<group>"; };
 		04CAE0A015F5050A0073E46D /* flowControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flowControl.h; sourceTree = "<group>"; };
-		04CAE0A115F505210073E46D /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
-		04CAE0A215F5052C0073E46D /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
 		04CAE0A415F50CB80073E46D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		04CAE0A515F520590073E46D /* interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interface.cpp; sourceTree = "<group>"; };
 		04CAE0A715F520660073E46D /* interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interface.h; sourceTree = "<group>"; };
@@ -278,28 +275,12 @@
 			isa = PBXGroup;
 			children = (
 				042338EF15F691BC00E5AE1A /* changelog.txt */,
-				042338F015F691BC00E5AE1A /* examples */,
 				042338F215F691BC00E5AE1A /* install.xml */,
 				042338F315F691BC00E5AE1A /* LICENSE.txt */,
 				042338F415F691BC00E5AE1A /* src */,
 			);
 			name = MSAInterpolator;
 			path = ../../../addons/MSAInterpolator;
-			sourceTree = "<group>";
-		};
-		042338F015F691BC00E5AE1A /* examples */ = {
-			isa = PBXGroup;
-			children = (
-				042338F115F691BC00E5AE1A /* openFrameworks */,
-			);
-			path = examples;
-			sourceTree = "<group>";
-		};
-		042338F115F691BC00E5AE1A /* openFrameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = openFrameworks;
 			sourceTree = "<group>";
 		};
 		042338F415F691BC00E5AE1A /* src */ = {
@@ -880,8 +861,6 @@
 				04CAE09C15F5003F0073E46D /* simulator.cpp */,
 				04CAE09E15F504FB0073E46D /* flowControl.cpp */,
 				04CAE0A015F5050A0073E46D /* flowControl.h */,
-				04CAE0A115F505210073E46D /* gui.h */,
-				04CAE0A215F5052C0073E46D /* gui.cpp */,
 				04CAE0A515F520590073E46D /* interface.cpp */,
 				04CAE0A715F520660073E46D /* interface.h */,
 			);
@@ -997,7 +976,6 @@
 				04CAE09915F4E6690073E46D /* data.cpp in Sources */,
 				04CAE09D15F5003F0073E46D /* simulator.cpp in Sources */,
 				04CAE09F15F504FB0073E46D /* flowControl.cpp in Sources */,
-				04CAE0A315F5052C0073E46D /* gui.cpp in Sources */,
 				04CAE0A615F520590073E46D /* interface.cpp in Sources */,
 				0423390B15F69DFC00E5AE1A /* Color.cpp in Sources */,
 				0423390C15F69DFC00E5AE1A /* MSACoreGL.cpp in Sources */,

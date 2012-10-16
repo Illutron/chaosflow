@@ -9,7 +9,8 @@ void Data::setup(){
     NSString *path = @"/Users/johan/dev/openframeworks/apps/myApps/chaosFlow/data-utils";
     NSArray *args = [NSArray arrayWithObjects:..., nil];
     [[NSTask launchedTaskWithLaunchPath:path arguments:args] waitUntilExit];
-     */    
+     */
+    
 }
 
 
@@ -152,6 +153,21 @@ DataPoint* Data::getPreviousPoint(DataPoint * point) {
     }
 }
 
+Path* Data::getNextPath(Path * path) {
+    if(path->i >= paths.size()-1) {
+        return &paths[0];
+    } else {
+        return &paths[path->i+1];
+    }
+}
+Path* Data::getPreviousPath(Path * path) {
+    if(path->i <= 0) {
+        return &paths[paths.size()-1];
+    } else {
+        return &paths[path->i-1];
+    }
+}
+
 void Path::addPoint(DataPoint * point) {
     points.push_back(point);
     update();
@@ -165,7 +181,8 @@ void Path::removeLocation(int index) {
 
 void Path::update() {
     sum.clear();
-    
+    sum_max = 0;
+
     for(int h=0; h<DATA_HOURS; h++) {
         int s = 0;
         
@@ -177,6 +194,10 @@ void Path::update() {
             if(point->bikes.size()>0) {
                 s += point->bikes.at(h);
             }
+        }
+        
+        if (s > sum_max) {
+            sum_max = s;
         }
         
         sum.push_back(s);

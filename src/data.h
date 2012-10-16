@@ -43,7 +43,7 @@ struct DataPoint {
 };
 
 struct Path {
-    int index;
+    int i; //index
     
     vector<DataPoint*> points;
     
@@ -55,6 +55,7 @@ struct Path {
     
     void update();
     int size() { return points.size(); };
+    
 };
 
 class Data {
@@ -72,6 +73,9 @@ public:
     
     DataPoint* getNextPoint(DataPoint * point);
     DataPoint* getPreviousPoint(DataPoint * point);
+    
+    Path* getNextPath(Path * path);
+    Path* getPreviousPath(Path * path);
     
     vector<Path> paths;
     

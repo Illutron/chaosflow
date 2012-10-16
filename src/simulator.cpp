@@ -1,32 +1,31 @@
 
 #include "simulator.h"
 
-void Simulator::setup(Data * dataRef, Gui * guiRef){
+void Simulator::setup(Data * dataRef, flowControl * flowRef){
 
     data = dataRef;
-    gui = guiRef;
+    flow = flowRef;
 
     simDuration = DATA_HOURS * 3600000;
     simElapsedTime = 0;
     
     lastUpdateTime = 0;
     
-    speed = 1200.;
-    
-    gui->playToggle = false;
+    speed = 2.;
+    //gui->playToggle = false;
 }
 
 void Simulator::update(){
     
-    elapsedFloat = simElapsedTime / float(simDuration);
+    // send out osc messages
+    // elapsed float 
+    // each channels data
+    // speed
     
-    if(gui->playToggle) {
-        play();
-    } else {
-        pause();
-    }
+    
+    elapsedFloat = simElapsedTime / float(simDuration);
         
-    speed = gui->simSpeed;
+    //speed = gui->simSpeed;
     
     if (playing) {
         
@@ -39,6 +38,11 @@ void Simulator::update(){
             simElapsedTime = simDuration;
             stop();
         }
+        
+        simulatePaths();
+        
+    } else {
+        pause();
     }
     
     realDuration = abs(simDuration/speed);
@@ -46,16 +50,31 @@ void Simulator::update(){
     
 }
 
+void Simulator::simulatePath(Channel * c) {
+    //c->path->sum_max;
+    //c->path->sum.at(elapsedFloat);
+    
+}   
+
+void Simulator::simulatePaths() {
+    
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        simulatePath(&flow->channels[i]);
+    }
+    
+    
+}
+
 void Simulator::pause(){
     if (playing) {
         playing = false;
-        gui->playToggle = false;
+        //gui->playToggle = false;
     }
 }
 
 void Simulator::stop(){
     playing = false;
-    gui->playToggle = false;
+    //gui->playToggle = false;
     simElapsedTime = 0;
 }
 
@@ -63,7 +82,7 @@ void Simulator::play(){
     if (!playing) {
         lastUpdateTime = ofGetElapsedTimeMillis();
         playing = true;
-        gui->playToggle = true;
+        //gui->playToggle = true;
     }
 }
 

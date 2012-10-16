@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "data.h"
-#include "gui.h"
+#include "flowControl.h"
 #include "defines.h"
 
 #include "MSAInterpolator.h"
@@ -10,7 +10,7 @@
 class Simulator {
 public:
 
-	void setup(Data * dataRef, Gui * guiRef);
+	void setup(Data * dataRef, flowControl * flowRef);
 	void update();
 	void debugDraw();
     
@@ -18,9 +18,12 @@ public:
     void pause();
     void stop();
     
+    void simulatePaths();
+    void simulatePath(Channel * c);
+    
     // data
     Data * data;
-    Gui * gui;
+    flowControl * flow;
     
     void drawInterpolation();
     MSA::Interpolator1D	 myInterpolator1D;

@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "data.h"
-#include "gui.h"
 #include "simulator.h"
 #include "flowControl.h"
 #include "interface.h"
@@ -27,7 +26,6 @@ class testApp : public ofBaseApp {
         void exit();
         
     Data * data;
-    Gui * gui;
     Simulator * simulator;
     flowControl * flowcontrol;
     Interface * ui;

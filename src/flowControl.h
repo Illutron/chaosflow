@@ -6,7 +6,10 @@
 
 struct Channel {
 public:
-    int address; // serial address
+    int i;
+    
+    int arduinoNum;
+    // consider having pins losted here if arduinos are not wired similarily
     
     float airPressure;
     float waterPressure;
@@ -28,6 +31,9 @@ public:
     
     Channel channels [NUM_CHANNELS];
     
+    Channel * getNextChannel(Channel * c);
+    Channel * getPreviousChannel(Channel * c);
+    
     void injectAir(Channel * c, float duration);
     //void injectAir(Channel * c, float duration, float pressure);
     
@@ -39,4 +45,7 @@ public:
     void closeWaterValve(Channel * c);
     void setWaterPressure(Channel * c, float pressure);
     
+    void updateChannel(Channel * c);
+    
+    ofSerial arduino [3];
 };
