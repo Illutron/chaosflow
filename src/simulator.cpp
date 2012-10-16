@@ -73,7 +73,7 @@ void Simulator::simulatePath(Channel * c) {
         c->path->trafficf = ofMap(c->path->sum.sampleAt(elapsedFloat), 0, maxPathSum, 0, 1);
         
         c->waterPressure = c->path->trafficf;
-        c->airPressure = ofMap(c->path->trafficf, 0, 1, 0.2, 0.4);
+        c->airPressure = ofMap(c->path->trafficf, 0, 1, 0.2, 0.3);
         
         
         //hasBike;

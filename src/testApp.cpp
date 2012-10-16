@@ -6,7 +6,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
     
-    ofSetLogLevel(OF_LOG_SILENT);
+    ofSetLogLevel(OF_LOG_ERROR);
     
     data = new Data();
     flowcontrol = new flowControl();

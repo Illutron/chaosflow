@@ -50,5 +50,7 @@ public:
     
     void updateChannel(Channel * c);
     
+    void sendValue(char label, int value, ofSerial * ard);
+    
     ofSerial arduino [3];
 };

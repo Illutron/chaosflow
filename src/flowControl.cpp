@@ -7,12 +7,31 @@ void flowControl::setup(){
     // set up serial connection
     
     arduino[0].enumerateDevices();
-    arduino[0].setup("/dev/cu.usbserial-A9007KHo", 9600);
+    arduino[0].setup("/dev/tty.usbmodemfa131", 9600);
     arduino[0].setVerbose(true);
     
     for (int i = 0; i < NUM_CHANNELS; i++) {
         channels[i].i = i;
     }
+    
+}
+
+void flowControl::sendValue(char label, int value, ofSerial * ard) {
+    bool valueWritten, labelWritten;
+    
+    valueWritten = ard->writeByte(value);
+    
+    if (valueWritten) {
+        labelWritten = ard->writeByte(label);
+    }
+    
+    //unsigned char myByte = 225;
+    //ard->writeByte(4);
+    //ard->writeByte('c');
+
+    //unsigned char buf[10] = {'1', ';', '100', ';', '200', ';', '0', ';', '1', '\n'};
+    //ard->writeBytes(&buf[0], 10);
+        
 }
 
 Channel* flowControl::getNextChannel(Channel * c) {
@@ -35,7 +54,7 @@ void flowControl::update(){
     
     // period that increases probability of bikes
     
-    if(ofGetFrameNum() % 4 == 0) {
+    if(ofGetFrameNum() % 4) { // add something to update less often
         for (int i = 0; i < NUM_CHANNELS; i++) {
             updateChannel(&channels[i]);
         }
@@ -48,8 +67,6 @@ void flowControl::debugDraw(){
 
 void flowControl::injectAir(Channel * c, float duration) {
     openWaterValve(c);
-    c->lock = true;
-    // trigger close watervalve after duration time and set lock false;
 }
 
 void flowControl::openWaterValve(Channel * c) {
@@ -72,8 +89,10 @@ void flowControl::closeAirValve(Channel * c) {
 void flowControl::updateChannel(Channel * c) {
     // data format is channel number int; air pressure float 0-1, water pressure float 0-1, air open bool, water open bool,
     
-    //const char
-    unsigned char buf[10] = {c->i, ';', c->airPressure, ';', c->waterPressure, ';', c->airOpen, ';', c->waterOpen, '\n'};
-    arduino[c->arduinoNum].writeBytes(&buf[0], 10);
-
+    sendValue('c', c->i, &arduino[0]);
+    sendValue('p', ofMap(c->airPressure, 0, 1, 0, 255), &arduino[0]);
+    sendValue('s', ofMap(c->waterPressure, 0, 1, 0, 255), &arduino[0]);
+    sendValue('a', c->airOpen, &arduino[0]);
+    sendValue('w', c->waterOpen, &arduino[0]);
+    
 }

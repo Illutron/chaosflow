@@ -173,7 +173,7 @@ void Interface::drawInterpolation(MSA::Interpolator1D * ipo, float max, bool lab
     ofPushMatrix();
     ofTranslate(x, y);
     
-    if(ipo) {
+    if(ipo && max != 0) {
         for(int i=0; i < w; i++) {
             ofCircle(i, ofMap(ipo->sampleAt(i/w), 0, max, h, 0), 1);
         }

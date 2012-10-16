@@ -1,6 +1,12 @@
 #define CHANNEL_NUM 5 
 
-int incomingByte = 0;   // for incoming serial data
+int commandValue = 0;   // for incoming serial data
+
+String inputString;
+boolean newCommand = false;
+
+int channel = 0;
+int value = 0;
 
 int state = 2; //0 = auto 1 = pending 2 = controlled
 long autoDelay = 400;
@@ -14,7 +20,7 @@ boolean airValveOpen [CHANNEL_NUM];
 float airPressure [CHANNEL_NUM];
 
 int waterValvePins [CHANNEL_NUM];
-int airValvePins [CHANNEL_NUM];
+int airValvePins [CHANNEL_NUM]; 
 int pumpPins [CHANNEL_NUM]; 
 int airRegulatorPins [CHANNEL_NUM];
 
@@ -23,6 +29,8 @@ int airRegulatorPins [CHANNEL_NUM];
 
 void setup() {
     Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
+    inputString.reserve(200);
+  
   
     waterValvePins[0] = 1;
     waterValvePins[1] = 2;
@@ -48,7 +56,7 @@ byte index = 0;
 void loop() {
 
         // send data only when yoSu receive data:
-        if (!Serial.available()) {
+       if (!Serial.available()) {
           // no data
           if (state == 2) {
             state = 1;
@@ -62,44 +70,47 @@ void loop() {
           
         } else {
           state = 2;
-          
-          // read the incoming byte:
-          incomingByte = Serial.read();
-
-          // say what you got:
-          Serial.print("I received: ");
-          Serial.println(incomingByte, DEC);
-          
-          while(Serial.available() > 0) {
-            char aChar = Serial.read();
-            if(aChar == '\n') {
-               // End of record detected. Time to parse
-             
-               char *p = inData; //assign the string to *p
-               char *str;        //intialize str
-               int counter = 0; //initialise the counter
-               
-               // data format is channel number int; air pressure float 0-1, water pressure float 0-1, air open bool, water open bool,
-               while ((str = strtok_r(p, ";", &p)) != "\0") // delimiter is the comma. NULL is the terminator
-               {
-                  parsedData[counter] = *str; //use the counter as an index to add each value to the array
-                  counter++; //increment the counter
-
-                  p = NULL;
-               }
-             
-               index = 0;
-               inData[index] = NULL;
-            } else {
-             inData[index] = aChar;
-             index++;
-             inData[index] = '\0'; // Keep the string NULL terminated
-            }
-          }
         }
         
-        if (state=0) {
+        if (state==0) {
           //auto control here   
-        }
+        } else if (state == 2) {
+          
+        int c;    
+        while(!Serial.available());    
+        c = Serial.read();
         
+        if (c!='c' && c!='p' && c!='s' && c!='a' && c!='w') {
+            value = c;
+        } else {
+            if (c=='c') {
+                channel = value;
+                Serial.println("Set channel to " + String(value));
+             } else if (c=='p') {
+                setAirPressure(channel, value);
+                Serial.println("Set air pressure to " + String(value));
+             } else if (c=='s') {
+                setWaterPressure(channel, value);
+                Serial.println("Set water pressure to " + String(value));
+             } else if (c=='a') {
+                if (value==1) {
+                  openAir(channel);
+                  Serial.println("Open air valve");
+                } else if (value == 0) {
+                  closeAir(channel);
+                  Serial.println("Close air valve");
+                }
+             } else if (c=='w') {
+                if (value==1) {
+                  openWater(channel);
+                  Serial.println("Open water valve");
+                } else if (value == 0) {
+                  closeWater(channel);
+                  Serial.println("Close water valve");
+                }
+             }
+              
+             value = 0;
+        }
+    }       
 }

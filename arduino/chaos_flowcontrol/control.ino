@@ -1,12 +1,12 @@
 
 void setAirPressure(int channel, float value) {
   airPressure[channel] = value;
-  analogWrite(airRegulatorPins[channel], map(value, 0, 1, 0, 255));
+  analogWrite(airRegulatorPins[channel], value);
 }
 
 void setWaterPressure(int channel, float value) {
   waterPressure[channel] = value;
-  analogWrite(pumpPins[channel], map(value, 0, 1, 0, 255));
+  analogWrite(pumpPins[channel], value);
 }
 
 void openWater(int channel) {
@@ -28,5 +28,7 @@ void closeAir(int channel) {
   airValveOpen[channel] = false;
   digitalWrite(airValvePins[channel], LOW);
 }
+
+
 
 
