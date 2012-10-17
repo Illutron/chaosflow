@@ -30,28 +30,60 @@ int airRegulatorPins [CHANNEL_NUM];
 void setup() {
     Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
     inputString.reserve(200);
-  
-  
-    waterValvePins[0] = 1;
-    waterValvePins[1] = 2;
-    waterValvePins[2] = 3;
     
-    airValvePins[0] = 1;
-    airValvePins[1] = 2;
-    airValvePins[2] = 3;
+    pinMode(8, OUTPUT);
+    pinMode(12, OUTPUT);
+    pinMode(13, OUTPUT);
     
-    pumpPins[0] = 1;
-    pumpPins[1] = 2;
-    pumpPins[2] = 3;
+    waterValvePins[0] = 8;
+    waterValvePins[1] = 12;
+    waterValvePins[2] = 13;
     
-    airRegulatorPins[0] = 1;
-    airRegulatorPins[1] = 2;
-    airRegulatorPins[2] = 3; 
+    pinMode(2, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(7, OUTPUT);
+    
+    airValvePins[0] = 2;
+    airValvePins[1] = 4;
+    airValvePins[2] = 7;
+    
+    pinMode(3, OUTPUT);
+    pinMode(5, OUTPUT);
+    pinMode(6, OUTPUT);
+    
+    pumpPins[0] = 3;
+    pumpPins[1] = 5;
+    pumpPins[2] = 6;
+    
+    pinMode(9, OUTPUT);
+    pinMode(10, OUTPUT);
+    pinMode(11, OUTPUT);
+    
+    airRegulatorPins[0] = 9;
+    airRegulatorPins[1] = 10;
+    airRegulatorPins[2] = 11; 
+    
+    
+    for(int i=0; i< CHANNEL_NUM; i++) {
+      
+      setAirPressure(i, 40);
+      
+      
+      openWater(i);
+      closeAir(i);
+      delay(2000);
+      closeWater(i);
+      openAir(i);
+      delay(2000);
+      openWater(i);
+      closeAir(i);
+      delay(2000);
+         
+    }
+   
+    
+    
 }
-
-char inData[80];
-char parsedData[80];
-byte index = 0;
 
 void loop() {
 
@@ -85,31 +117,31 @@ void loop() {
         } else {
             if (c=='c') {
                 channel = value;
-                Serial.println("Set channel to " + String(value));
+                //Serial.println("Set channel to " + String(value));
              } else if (c=='p') {
                 setAirPressure(channel, value);
-                Serial.println("Set air pressure to " + String(value));
+                //Serial.println("Set air pressure to " + String(value));
              } else if (c=='s') {
                 setWaterPressure(channel, value);
-                Serial.println("Set water pressure to " + String(value));
+                //Serial.println("Set water pressure to " + String(value));
              } else if (c=='a') {
                 if (value==1) {
                   openAir(channel);
-                  Serial.println("Open air valve");
+                  //Serial.println("Open air valve");
                 } else if (value == 0) {
                   closeAir(channel);
-                  Serial.println("Close air valve");
+                  //Serial.println("Close air valve");
                 }
              } else if (c=='w') {
                 if (value==1) {
                   openWater(channel);
-                  Serial.println("Open water valve");
+                  //Serial.println("Open water valve");
                 } else if (value == 0) {
                   closeWater(channel);
-                  Serial.println("Close water valve");
+                  //Serial.println("Close water valve");
                 }
              }
-              
+             
              value = 0;
         }
     }       

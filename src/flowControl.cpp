@@ -8,6 +8,7 @@ void flowControl::setup(){
     
     arduino[0].enumerateDevices();
     arduino[0].setup("/dev/tty.usbmodemfa131", 9600);
+    arduino[1].setup("/dev/tty.usbmodemfa131", 9600);
     arduino[0].setVerbose(true);
     
     for (int i = 0; i < NUM_CHANNELS; i++) {
@@ -89,10 +90,21 @@ void flowControl::closeAirValve(Channel * c) {
 void flowControl::updateChannel(Channel * c) {
     // data format is channel number int; air pressure float 0-1, water pressure float 0-1, air open bool, water open bool,
     
-    sendValue('c', c->i, &arduino[0]);
-    sendValue('p', ofMap(c->airPressure, 0, 1, 0, 255), &arduino[0]);
-    sendValue('s', ofMap(c->waterPressure, 0, 1, 0, 255), &arduino[0]);
-    sendValue('a', c->airOpen, &arduino[0]);
-    sendValue('w', c->waterOpen, &arduino[0]);
+    int ci;
+    int ard = 0;
+    
+    if (c->i > 2) {
+        ci = c->i - 3;
+        ard = 1;
+    } else if (c->i ) {
+        ci = c->i - 6;
+        ard = 2;
+    }
+    
+    sendValue('c', ci, &arduino[ard]);
+    sendValue('p', ofMap(c->airPressure, 0, 1, 0, 255), &arduino[ard]);
+    sendValue('s', ofMap(c->waterPressure, 0, 1, 0, 255), &arduino[ard]);
+    sendValue('a', c->airOpen, &arduino[ard]);
+    sendValue('w', c->waterOpen, &arduino[ard]);
     
 }
