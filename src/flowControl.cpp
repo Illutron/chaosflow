@@ -7,14 +7,14 @@ void flowControl::setup(){
     // set up serial connection
     
     arduino[0].enumerateDevices();
-    arduino[0].setup("/dev/tty.usbmodemfa131", 9600);
-    arduino[1].setup("/dev/tty.usbmodemfa131", 9600);
+    arduino[0].setup("/dev/tty.usbmodemfa1311", 9600);
+    arduino[1].setup("/dev/tty.usbmodemfa1321", 9600);
+    arduino[2].setup("/dev/tty.usbmodemfa1341", 9600);
     arduino[0].setVerbose(true);
     
     for (int i = 0; i < NUM_CHANNELS; i++) {
         channels[i].i = i;
     }
-    
 }
 
 void flowControl::sendValue(char label, int value, ofSerial * ard) {

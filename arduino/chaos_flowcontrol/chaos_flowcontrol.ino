@@ -34,59 +34,85 @@ void setup() {
     pinMode(8, OUTPUT);
     pinMode(12, OUTPUT);
     pinMode(13, OUTPUT);
+    pinMode(2, OUTPUT);
+    pinMode(4, OUTPUT);
+    pinMode(7, OUTPUT);
+    pinMode(3, OUTPUT);
+    pinMode(5, OUTPUT);
+    pinMode(6, OUTPUT);
+    pinMode(9, OUTPUT);
+    pinMode(10, OUTPUT);
+    pinMode(11, OUTPUT);
     
     waterValvePins[0] = 8;
     waterValvePins[1] = 12;
     waterValvePins[2] = 13;
     
-    pinMode(2, OUTPUT);
-    pinMode(4, OUTPUT);
-    pinMode(7, OUTPUT);
-    
     airValvePins[0] = 2;
     airValvePins[1] = 4;
     airValvePins[2] = 7;
-    
-    pinMode(3, OUTPUT);
-    pinMode(5, OUTPUT);
-    pinMode(6, OUTPUT);
     
     pumpPins[0] = 3;
     pumpPins[1] = 5;
     pumpPins[2] = 6;
     
-    pinMode(9, OUTPUT);
-    pinMode(10, OUTPUT);
-    pinMode(11, OUTPUT);
-    
     airRegulatorPins[0] = 9;
     airRegulatorPins[1] = 10;
-    airRegulatorPins[2] = 11; 
+    airRegulatorPins[2] = 11;
     
+    setAirPressure(0, 5);
+    setAirPressure(1, 40);
+    setAirPressure(2, 40);
     
+
     for(int i=0; i< CHANNEL_NUM; i++) {
-      
-      setAirPressure(i, 40);
-      
-      
-      openWater(i);
+      setAirPressure(i, 80);
       closeAir(i);
-      delay(2000);
       closeWater(i);
-      openAir(i);
-      delay(2000);
-      openWater(i);
-      closeAir(i);
-      delay(2000);
-         
     }
    
-    
-    
 }
 
 void loop() {
-
+       
+       // //  
+       // // arduino 1 
+       // 0 is 2
+       // 2 is 1
+       // 3 - 0
+       // 4 - 1 // 3 vand og 4 vand rør hindanden
+       // 5 - 2
+       // 6 - 0
+       // 7 - 1
+       /* 
+       int tc = 1;
+       closeWater(tc); 
+       openAir(tc);
+       delay(200);
+       closeAir(tc);
+       openWater(tc);
+       delay(200);*/
+       
+       /*
+       tc = 2;
+       closeWater(tc); 
+       openAir(tc);
+       delay(300);
+       closeAir(tc);
+       openWater(tc);
+       delay(200);
+       
+       tc = 0;
+       closeWater(tc); 
+       openAir(tc);
+       delay(100);
+       closeAir(tc);
+       openWater(tc);
+       delay(400);*/
+       
+        
+  
+  
         // send data only when yoSu receive data:
        if (!Serial.available()) {
           // no data
