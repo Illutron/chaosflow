@@ -32,7 +32,6 @@ struct DataPoint {
         return loc->name + " - " + loc->dir_names[direction];
     }
     
-    
     MSA::Interpolator1D bikes;
     int sum;
     

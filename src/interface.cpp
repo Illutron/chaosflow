@@ -15,9 +15,82 @@ void Interface::setup(Data * dataRef, Simulator * simRef, flowControl * flowRef)
     selectedChannel = &flow->channels[0];
     selectedPath = &data->paths[0];
     selectedPoint = &data->dataPoints[0];
+    
+    //cout << "listening for osc messages on port 7000"<<endl;
+    //receiver.setup(7000);
+    
+    //sender.setup(SEND_HOST, SEND_PORT);
+    
+    //mode = 0;
 }
 
 void Interface::update(){
+    
+    /*for(int i = 0; i < NUM_MSG_STRINGS; i++){
+		if(timers[i] < ofGetElapsedTimef()){
+			msg_strings[i] = "";
+		}
+	}*/
+    /*
+	// check for waiting messages
+	while(receiver.hasWaitingMessages()){
+		// get the next message
+		ofxOscMessage m;
+		receiver.getNextMessage(&m);
+        
+        if(m.getAddress() == "/1/fader3"){
+            timeStep = ofMap(m.getArgAsFloat(0), 0, 1, -150, 150); 
+        }
+        
+        if(m.getAddress() == "/1/fader1"){
+            particleNeighborhood = ofMap(m.getArgAsFloat(0), 0, 1, 0, 25); 
+        }
+        
+        if(m.getAddress() == "/1/fader4"){
+            particleRepulsion = ofMap(m.getArgAsFloat(0), 0, 1, 0, 1); 
+        }
+        
+        
+        if(m.getAddress() == "/1/fader5"){
+            centerAttraction = ofMap(m.getArgAsFloat(0), 0, 1, -1, 1); 
+        }
+        
+        if(m.getAddress() == "1/fader2"){
+            bodyAttraction = ofMap(m.getArgAsFloat(0), 0, 1, -1, 1); 
+        }
+        
+        if(m.getAddress() == "/1/xy1"){
+            int x = ofMap(m.getArgAsFloat(0), 0, 1, 0, ofGetWidth());
+            int y = ofMap(m.getArgAsFloat(1), 0, 1, 0, ofGetHeight());
+            
+            centerLoc = ofVec2f(x, y);
+            
+        }*/
+        
+        
+        
+        /*
+        
+        if(m.getAddress() == "/1/toggle14"){
+            if(m.getArgAsInt32(0) == 1) {
+                drawSkeleton = true;
+            } else {
+                drawSkeleton = false;
+            }
+        }
+        
+        if(m.getAddress() == "/1/toggle13"){
+            if(m.getArgAsInt32(0) == 1) {
+                dynamicTime = true;
+            } else {
+                dynamicTime = false;
+            }
+        }
+        */
+        
+        
+	//}
+    
     
     // update locations for stuff that is clickable here ?
     
@@ -230,6 +303,34 @@ void Interface::keyPressed(int key){
         if(key == 't') {
             selectedChannel = flow->getPreviousChannel(selectedChannel);
         }
+        
+        
+        if(key == 'o') {
+            selectedChannel->waterOpen = false;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'O') {
+            selectedChannel->waterOpen = true;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'p') {
+            selectedChannel->airOpen = false;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'P') {
+            selectedChannel->airOpen = true;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'i') {
+            selectedChannel->airPressure += 0.01;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'I') {
+            selectedChannel->airPressure -= 0.01;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'u') {
+            selectedChannel->waterPressure += 0.01;
+            flow->updateChannel(selectedChannel);
+        } else if(key == 'U') {
+            selectedChannel->waterPressure -= 0.01;
+            flow->updateChannel(selectedChannel);
+        }
+        
         
         if(key == 'q') {
             if(selectedPath) {

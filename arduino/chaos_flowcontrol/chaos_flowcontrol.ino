@@ -84,34 +84,31 @@ void loop() {
        // 5 - 2
        // 6 - 0
        // 7 - 1
-       /* 
+        /*
        int tc = 1;
        closeWater(tc); 
        openAir(tc);
-       delay(200);
+       delay(200 + random(200));
        closeAir(tc);
        openWater(tc);
-       delay(200);*/
+       delay(200 + random(200));
        
-       /*
+       
        tc = 2;
        closeWater(tc); 
        openAir(tc);
-       delay(300);
+       delay(300 + random(200));
        closeAir(tc);
        openWater(tc);
-       delay(200);
+       delay(200 + random(200));
        
        tc = 0;
        closeWater(tc); 
        openAir(tc);
-       delay(100);
+       delay(100 + random(200));
        closeAir(tc);
        openWater(tc);
-       delay(400);*/
-       
-        
-  
+       delay(400 + random(200));*/
   
         // send data only when yoSu receive data:
        if (!Serial.available()) {
@@ -135,7 +132,7 @@ void loop() {
         } else if (state == 2) {
           
         int c;    
-        while(!Serial.available());    
+        //while(!Serial.available());    
         c = Serial.read();
         
         if (c!='c' && c!='p' && c!='s' && c!='a' && c!='w') {
@@ -161,6 +158,7 @@ void loop() {
              } else if (c=='w') {
                 if (value==1) {
                   openWater(channel);
+                  
                   //Serial.println("Open water valve");
                 } else if (value == 0) {
                   closeWater(channel);

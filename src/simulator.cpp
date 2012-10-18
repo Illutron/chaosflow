@@ -14,6 +14,7 @@ void Simulator::setup(Data * dataRef, flowControl * flowRef){
     speed = 20.;
     //gui->playToggle = false;
     
+    mode = 0;
     
     stoPeriod = 100;
     
@@ -68,12 +69,14 @@ void Simulator::update(){
 
 void Simulator::simulatePath(Channel * c) {
     
-    if(c->path) {
+    if(c->path && mode == 0) {
+        
+        
         
         c->path->trafficf = ofMap(c->path->sum.sampleAt(elapsedFloat), 0, maxPathSum, 0, 1);
         
         c->waterPressure = c->path->trafficf;
-        c->airPressure = ofMap(c->path->trafficf, 0, 1, 0.2, 0.3);
+        c->airPressure = c->path->trafficf;
         
         
         //hasBike;
@@ -86,21 +89,24 @@ void Simulator::simulatePath(Channel * c) {
         if(c->path->hasBike) {
             if(ofGetElapsedTimeMillis() - c->path->lastBike > c->path->singleBikeDuration) {
                 c->path->hasBike = false;
+                
+                c->airOpen = false;
+                c->waterOpen = true;
+                
+                flow->updateChannel(c);
             }
         } else {
             if(ofGetElapsedTimeMillis() - c->path->lastBike > c->path->timeToNextBike) {
                 c->path->hasBike = true;
+                
+                c->airOpen = true;
+                c->waterOpen = false;
+                
+                flow->updateChannel(c);
                 c->path->lastBike = ofGetElapsedTimeMillis();
             }
         }
         
-        if(c->path->hasBike) {
-            c->airOpen = true;
-            c->waterOpen = false;
-        } else {
-            c->airOpen = false;
-            c->waterOpen = true;
-        }
         
         
         

@@ -51,4 +51,6 @@ public:
     
     float baseBikeDuration;
     
+    int mode;
+    
 };

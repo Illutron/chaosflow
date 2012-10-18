@@ -11,6 +11,8 @@ public:
     int arduinoNum;
     // consider having pins losted here if arduinos are not wired similarily
     
+    float airCal;
+    
     float airPressure;
     float waterPressure;
     

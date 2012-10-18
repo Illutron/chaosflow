@@ -8,6 +8,8 @@
 #include "simulator.h"
 #include "flowControl.h"
 
+#define NUM_MSG_STRINGS 20
+
 
 class Interface {
 public:
@@ -58,6 +60,14 @@ public:
     Path * selectedPath;
     DataPoint * selectedPoint;
     Channel * selectedChannel;
+    
+    /*
+    ofxOscReceiver receiver;
+    ofxOscSender sender;
+    
+    int current_msg_string;
+    string msg_strings[NUM_MSG_STRINGS];
+    float timers[NUM_MSG_STRINGS];*/
     
     
 };
