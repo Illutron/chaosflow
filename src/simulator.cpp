@@ -82,8 +82,8 @@ void Simulator::simulatePath(Channel * c) {
         //hasBike;
         
         if (ofGetFrameNum() % 8 == 0) {
-            c->path->timeToNextBike = ofMap(c->path->trafficf, 0, 1, 6000, 100) + ofMap(ofNoise(elapsedFloat), -1, 1, 2000, 0); 
-            c->path->singleBikeDuration = ofMap(c->path->trafficf, 0, 1, 1000, 20) + ofMap(ofNoise(elapsedFloat), -1, 1, 200, 0);
+            c->path->timeToNextBike = ofMap(c->path->trafficf, 0, 1, 20000, 13000) + ofMap(ofNoise(elapsedFloat), -1, 1, 4000, 0); 
+            c->path->singleBikeDuration = ofMap(c->path->trafficf, 0, 1, 10000, 4000) + ofMap(ofNoise(elapsedFloat), -1, 1, 3000, 0);
         }
         
         if(c->path->hasBike) {

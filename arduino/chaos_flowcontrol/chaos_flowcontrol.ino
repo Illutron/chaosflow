@@ -12,6 +12,8 @@ int state = 2; //0 = auto 1 = pending 2 = controlled
 long autoDelay = 400;
 long lastContact = 0;
 
+bool testing = false;
+
 int channels [CHANNEL_NUM];
 
 float waterPressure [CHANNEL_NUM];
@@ -60,16 +62,16 @@ void setup() {
     airRegulatorPins[1] = 10;
     airRegulatorPins[2] = 11;
     
-    setAirPressure(0, 5);
-    setAirPressure(1, 40);
-    setAirPressure(2, 40);
-    
-
     for(int i=0; i< CHANNEL_NUM; i++) {
-      setAirPressure(i, 80);
+      setAirPressure(i, 90);
       closeAir(i);
-      closeWater(i);
+      openWater(i);
+     
     }
+    
+    setAirPressure(1, 120);
+    
+    
    
 }
 
@@ -84,32 +86,36 @@ void loop() {
        // 5 - 2
        // 6 - 0
        // 7 - 1
-        /*
-       int tc = 1;
-       closeWater(tc); 
-       openAir(tc);
-       delay(200 + random(200));
-       closeAir(tc);
-       openWater(tc);
-       delay(200 + random(200));
+       
+       // arduino 1
+       // 0: virker ikke
+       // 1: success
+       // 2: success
+       
+       // arduino 2
+       // 3: - pumpe trækker kun 0.2 ampere ved 12v
+       // 4: success 
+       // 5: - pumpe kortsluttet
+       
+       // arduino 3
+       // 6: success
+       // 7: success  
+       
+    int tc = 0;
+    
+
+    
+    //setAirPressure(tc, 120);
+    //openAir(tc);
+    
+    
        
        
-       tc = 2;
-       closeWater(tc); 
-       openAir(tc);
-       delay(300 + random(200));
-       closeAir(tc);
-       openWater(tc);
-       delay(200 + random(200));
-       
-       tc = 0;
-       closeWater(tc); 
-       openAir(tc);
-       delay(100 + random(200));
-       closeAir(tc);
-       openWater(tc);
-       delay(400 + random(200));*/
-  
+
+ 
+        
+ if (!testing) {   
+        
         // send data only when yoSu receive data:
        if (!Serial.available()) {
           // no data
@@ -128,16 +134,32 @@ void loop() {
         }
         
         if (state==0) {
-          //auto control here   
+          
+              for(int i=0; i< CHANNEL_NUM; i++) {
+      
+                 tc = i;
+       
+                 //setAirPressure(i, 100);
+                 closeWater(tc); 
+                 openAir(tc);
+                 delay(400 + random(2000));
+                 closeAir(tc);
+                 openWater(tc);
+                 delay(400 + random(2000));
+       
+       
+             }
+        
+          
         } else if (state == 2) {
           
-        int c;    
-        //while(!Serial.available());    
-        c = Serial.read();
+         int c;    
+         //while(!Serial.available());    
+         c = Serial.read();
         
-        if (c!='c' && c!='p' && c!='s' && c!='a' && c!='w') {
-            value = c;
-        } else {
+         if (c!='c' && c!='p' && c!='s' && c!='a' && c!='w') {
+             value = c;
+         } else {
             if (c=='c') {
                 channel = value;
                 //Serial.println("Set channel to " + String(value));
@@ -168,5 +190,6 @@ void loop() {
              
              value = 0;
         }
-    }       
+    }
+  }    
 }

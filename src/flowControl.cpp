@@ -8,21 +8,21 @@ void flowControl::setup(){
     
     arduino[0].enumerateDevices();
     
-    arduino[0].setup("/dev/tty.usbmodemfd1221", 9600);
-    arduino[1].setup("/dev/tty.usbmodemfd1211", 9600);
-    arduino[2].setup("/dev/tty.usbmodemfd1241", 9600);
+    arduino[0].setup("/dev/tty.usbmodemfa1311", 9600);
+    arduino[1].setup("/dev/tty.usbmodemfa1321", 9600);
+    arduino[2].setup("/dev/tty.usbmodemfa1341", 9600);
     //arduino[2].setup(2, 9600);
     
     //arduino[0].setVerbose(true);
     
     for (int i = 0; i < NUM_CHANNELS; i++) {
         channels[i].i = i;
-        channels[i].airCal = 0.8;
+        channels[i].airCal = 1;
         channels[i].waterOpen = true;
         updateChannel(&channels[i]);
     }
     
-    channels[0].airCal = 0.2; 
+    channels[0].airCal = 1; 
     
 }
 
@@ -102,19 +102,19 @@ void flowControl::updateChannel(Channel * c) {
     int ci;
     int ard = 0;
     
-    if (c->i > 2) {
+    if (c->i > 2 && c->i < 4) {
         ci = c->i - 3;
         ard = 1;
-    } else if (c->i ) {
+    } else if (c->i > 4) {
         ci = c->i - 6;
         ard = 2;
     }
     
     sendValue('c', ci, &arduino[ard]);    
     
-    sendValue('p', ofMap(c->airPressure, 0, 1, 0, 160) * c->airCal, &arduino[ard]);
+    sendValue('p', 100, &arduino[ard]);
     //sendValue('s', ofMap(c->waterPressure, 0, 1, 0, 255), &arduino[ard]);
     sendValue('a', c->airOpen, &arduino[ard]);
-    sendValue('w', true, &arduino[ard]); // hard coded ex
+    sendValue('w', c->waterOpen, &arduino[ard]); // hard coded ex
     
 }
